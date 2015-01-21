@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="15" height="10" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="Road_Forrest" tilewidth="64" tileheight="64">
+  <image source="Road_Forrest.png" width="320" height="256"/>
+ </tileset>
+ <layer name="Road_Forrest" width="15" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgYwAjETFgwP1ReBIc8CxBzk2kn2yDVy0VArwADxN+45LEBUPgKQ9kg/UJYMC8OcWF0w8gAADOLAZ0=
+  </data>
+ </layer>
+ <objectgroup color="#81aa96" name="path" width="15" height="10">
+  <object x="407" y="153"/>
+  <object x="41" y="149"/>
+  <object x="39" y="477"/>
+  <object x="89" y="483"/>
+  <object x="87" y="533"/>
+  <object x="485" y="541"/>
+  <object x="485" y="409"/>
+ </objectgroup>
+ <objectgroup name="path" width="15" height="10">
+  <object x="544" y="160"/>
+  <object x="925" y="173"/>
+  <object x="921" y="471"/>
+  <object x="873" y="483"/>
+  <object x="871" y="551"/>
+  <object x="479" y="547"/>
+  <object x="480" y="412"/>
+ </objectgroup>
+ <objectgroup color="#0a0a0b" name="blocked" width="15" height="10"/>
+ <objectgroup color="#55ff00" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20002"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="409" y="221"/>
+  <object x="659" y="350"/>
+  <object x="421" y="286"/>
+ </objectgroup>
+ <objectgroup color="#55ff00" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20003"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="297" y="100"/>
+  <object x="231" y="292"/>
+  <object x="729" y="346"/>
+  <object x="547" y="426"/>
+  <object x="671" y="98"/>
+ </objectgroup>
+ <objectgroup color="#55ff00" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20004"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="419" y="477"/>
+  <object x="481" y="221"/>
+  <object x="731" y="98"/>
+  <object x="861" y="288"/>
+  <object x="669" y="288"/>
+  <object x="545" y="482"/>
+  <object x="221" y="418"/>
+  <object x="222" y="480"/>
+  <object x="227" y="346"/>
+  <object x="491" y="98"/>
+  <object x="547" y="100"/>
+ </objectgroup>
+ <objectgroup color="#00ff00" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20005"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="539" y="229"/>
+  <object x="607" y="99"/>
+  <object x="486" y="164"/>
+ </objectgroup>
+ <objectgroup color="#005500" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20001"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="413" y="335"/>
+  <object x="607" y="282"/>
+ </objectgroup>
+ <objectgroup color="#00ffaa" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20006"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+  <object x="25" y="93"/>
+  <object x="797" y="95"/>
+  <object x="738" y="481"/>
+  <object x="597" y="225"/>
+  <object x="299" y="354"/>
+  <object x="347" y="102"/>
+ </objectgroup>
+ <objectgroup color="#aaffff" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20009"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+  <object x="107" y="225"/>
+  <object x="603" y="412"/>
+ </objectgroup>
+ <objectgroup color="#ffaa00" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20010"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+  <object x="733" y="229"/>
+  <object x="288" y="417"/>
+ </objectgroup>
+ <objectgroup color="#00aa7f" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="90005"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#04ecd9" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="90007"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#000000" name="tower" width="15" height="10">
+  <properties>
+   <property name="id" value="41001"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+  <object x="100" y="352"/>
+  <object x="805" y="352"/>
+ </objectgroup>
+ <objectgroup color="#000000" name="tower" width="15" height="10">
+  <properties>
+   <property name="id" value="41002"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#000000" name="tower" width="15" height="10">
+  <properties>
+   <property name="id" value="41003"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#000000" name="teemo" width="15" height="10">
+  <properties>
+   <property name="id" value="1"/>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+  <object x="489" y="287"/>
+ </objectgroup>
+ <objectgroup color="#000000" name="random" width="15" height="10">
+  <properties>
+   <property name="sizeH" value="2"/>
+   <property name="sizeW" value="2"/>
+  </properties>
+  <object x="290" y="224"/>
+ </objectgroup>
+ <objectgroup color="#ff0000" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="90001"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="737" y="417"/>
+ </objectgroup>
+ <objectgroup color="#00b5ec" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="90002"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#ffff00" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="90003"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#ff5500" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="90004"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#5500ff" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="20008"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="929" y="542"/>
+  <object x="34" y="545"/>
+ </objectgroup>
+ <objectgroup color="#ffff00" name="item" width="15" height="10">
+  <properties>
+   <property name="id" value="90006"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+  <object x="223" y="226"/>
+  <object x="935" y="90"/>
+  <object x="157" y="98"/>
+ </objectgroup>
+ <objectgroup color="#ff007f" name="bomb" width="15" height="10">
+  <properties>
+   <property name="damage" value="10000"/>
+   <property name="id" value="90008"/>
+   <property name="range" value="128"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#ff007f" name="bomb" width="15" height="10">
+  <properties>
+   <property name="damage" value="10000"/>
+   <property name="id" value="90009"/>
+   <property name="range" value="128"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#ff007f" name="bomb" width="15" height="10">
+  <properties>
+   <property name="damage" value="10000"/>
+   <property name="id" value="90010"/>
+   <property name="range" value="192"/>
+   <property name="sizeH" value="1"/>
+   <property name="sizeW" value="1"/>
+  </properties>
+ </objectgroup>
+ <objectgroup color="#ff007f" name="hero" width="15" height="10">
+  <properties>
+   <property name="id" value="40071"/>
+  </properties>
+  <object x="227" y="225"/>
+  <object x="226" y="292"/>
+  <object x="224" y="416"/>
+  <object x="224" y="481"/>
+  <object x="739" y="225"/>
+  <object x="740" y="292"/>
+  <object x="737" y="423"/>
+  <object x="732" y="482"/>
+ </objectgroup>
+ <objectgroup color="#ff007f" name="hero" width="15" height="10">
+  <properties>
+   <property name="id" value="40021"/>
+  </properties>
+  <object x="481" y="157"/>
+  <object x="32" y="547"/>
+  <object x="934" y="546"/>
+ </objectgroup>
+ <objectgroup color="#55ffff" name="hero" width="15" height="10">
+  <properties>
+   <property name="id" value="40081"/>
+  </properties>
+  <object x="738" y="355"/>
+  <object x="224" y="353"/>
+ </objectgroup>
+</map>

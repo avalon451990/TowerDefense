@@ -1,0 +1,28 @@
+{
+    "project_type": "javascript",
+
+    "debugMode" : 1,
+    "showFPS" : true,
+    "frameRate" : 60,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"frameworks/cocos2d-html5",
+
+    "modules" : ["cocos2d", "extensions"],
+
+    "jsList" : [
+        "src/resource.js",
+        "src/gameLayer/BackGroundLayer.js",
+        "src/gameLayer/DisplayLayer.js",
+        "src/gameLayer/UiLayer.js",
+        "src/scene/GameScene.js",
+        "src/tools/GameDataManager.js",
+
+        "src/gameObject/GameManager.js",
+        "src/gameObject/GameObjectFactory.js",
+        "src/gameObject/GameObject.js",
+        "src/gameObject/Monster.js",
+        "src/gameObject/PartObject.js",
+        "src/gameObject/Teemo.js"
+    ]
+}
