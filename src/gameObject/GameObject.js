@@ -29,8 +29,8 @@ var GameObject = cc.Node.extend({
     getRect : function(){
         return cc.rect(this._rect.x + this.getPosition().x,
                             this._rect.y + this.getPosition().y,
-                            this._rect.w,
-                            this._rect.h);
+                            this._rect.width,
+                            this._rect.height);
     },
     setRectSize : function(wid, hei){
         this._rect = cc.rect(

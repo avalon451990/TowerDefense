@@ -24,6 +24,8 @@
         "src/gameObject/GameObject.js",
         "src/gameObject/Monster.js",
         "src/gameObject/PartObject.js",
-        "src/gameObject/Teemo.js"
+        "src/gameObject/Teemo.js",
+        "src/gameObject/Tower.js",
+        "src/gameObject/GailunTower.js"
     ]
 }

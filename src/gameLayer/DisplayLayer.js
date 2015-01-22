@@ -260,6 +260,7 @@ var DisplayLayer = cc.Layer.extend({
                 }
                 case 0:{
                     //创建塔;
+                    this.createTower(index_X, index_Y, 0);
                     break;
                 }
                 default :{
@@ -279,6 +280,15 @@ var DisplayLayer = cc.Layer.extend({
         monster.setPosition(g_pathArray[0]);
         this._gameManager.addGameObject(monster);
 	},
+    //创建塔;
+    createTower : function(posX, posY, id){
+        var tower = GameObjectFactory.createGameObject(TOWER,0);
+        this._tmxMap.addChild(tower);
+        tower.setPosition(cc.p(posX*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2, posY*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
+        this._gameManager.addGameObject(tower);
+        //修改地图;
+        this._mapArray[posX][posY] = 1;
+    },
 
     //分析触点;
     analysisTouch : function(posX, posY){

@@ -10,7 +10,12 @@ GameObjectFactory._createMonster = function(id){
 };
 //创建塔;
 GameObjectFactory._createTower = function(id){
-
+    switch (id){
+        case 0:{
+            return new GailunTower(40011);
+            break;
+        }
+    }
 };
 //创建子弹;
 GameObjectFactory._createBullet = function(id){

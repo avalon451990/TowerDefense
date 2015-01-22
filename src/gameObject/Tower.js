@@ -17,7 +17,7 @@ var Tower = GameObject.extend({
         if(this.initData() == false){
             cc.assert(false, "there is no tower data!");
         }
-        this._atkTime = this._towerData.atkSpeed;
+        //this._atkTime = this._towerData.atkSpeed;
     },
     initData: function(){
         var count = g_heroData.length;
@@ -52,16 +52,16 @@ var Tower = GameObject.extend({
                 }
             }
         }
-        //寻找摆件;
-        var objArr = g_disPlayLayer.getGameManager().getObjArray(PART);
-        for(var i = 0; i < objArr.length; i++){
-            if(objArr[i].getState() === STATE_ACTIVE){
-                if(cc.pDistance(objArr[i].getPosition(), this.getPosition()) <= this._towerData.atkRange){
-                    this._target = objArr[i];
-                    return;
-                }
-            }
-        }
+//        //寻找摆件;
+//        var objArr = g_disPlayLayer.getGameManager().getObjArray(PART);
+//        for(var i = 0; i < objArr.length; i++){
+//            if(objArr[i].getState() === STATE_ACTIVE){
+//                if(cc.pDistance(objArr[i].getPosition(), this.getPosition()) <= this._towerData.atkRange){
+//                    this._target = objArr[i];
+//                    return;
+//                }
+//            }
+//        }
         this._target = null;
     },
 

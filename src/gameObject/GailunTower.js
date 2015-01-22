@@ -1,5 +1,4 @@
 
-
 var GailunTower = Tower.extend({
 
     ctor : function(id){
@@ -10,16 +9,31 @@ var GailunTower = Tower.extend({
 
     initSp : function(){
         var url = "res/Armature/" + this._towerData.resource + "/" + this._towerData.resource + ".csb";
-        cc.log(url);
+        //cc.log(url);
         ccs.armatureDataManager.addArmatureFileInfo(url);
-        this._animation = new ccs.Armature(this._monsterData.action);
+        this._animation = new ccs.Armature(this._towerData.resource);
         this._animation.getAnimation().play("show");
         this.addChild(this._animation);
+        //普通攻击动画;
+        var skillData = this._towerData.normalAtk;
+        for(var i = 0; i < g_skill.length; i++){
+            if(g_skill[i].id == this._towerData.normalAtk){
+                skillData = g_skill[i];
+            }else{
+                cc.assert(false, "fault!");
+            }
+        }
+        url = "res/Armature/" + skillData.resouce1 + "/" + skillData.action + ".csb";
+        ccs.armatureDataManager.addArmatureFileInfo(url);
+        this._atkAnimation = new ccs.Armature(skillData.action);
+        this._atkAnimation.getAnimation().play("show");
+        this.addChild(this._atkAnimation);
+        this._atkAnimation.setVisible(false);
     },
 
     updateObject : function(dt){
         if(this._target == null || this._target.getState != STATE_ACTIVE
-            || cc.pDistance(this._target.getPosition(), this.getPosition()) <= this._towerData.atkRange){
+            || cc.pDistance(this._target.getPosition(), this.getPosition()) > this._towerData.atkRange){
             this.getTargetObject();
         }
         //攻击倒计时;
@@ -29,18 +43,24 @@ var GailunTower = Tower.extend({
             if(this._target != null){
                 this._atkTime = this._towerData.atkSpeed;
                 this._animation.getAnimation().play("attack");
+                this._atkAnimation.setVisible(true);
+                this._atkAnimation.getAnimation().play("show");
                 //开始攻击;
+                this._target.beHurt(this._towerData.atkPower);
             }else{
                 //没有目标待机;
-                if(this._animation.getAnimation().getCurrentPercent() >= 100){
+                if(this._animation.getAnimation().getCurrentPercent() >= 1){
                     this._animation.getAnimation().play("show");
                 }
             }
         }else{
             //攻击间隔没到;
-            if(this._animation.getAnimation().getCurrentPercent() >= 100){
+            if(this._animation.getAnimation().getCurrentPercent() >= 1){
                 this._animation.getAnimation().play("show");
             }
+        }
+        if(this._atkAnimation.getAnimation().getCurrentPercent() >= 1){
+            this._atkAnimation.setVisible(false);
         }
 
     }

@@ -42,6 +42,7 @@ var Monster = GameObject.extend({
         this._animation.getAnimation().play("show");
         this.addChild(this._animation);
 
+        this._rect = cc.rect(-20, -25, 40, 50);
     },
 
     updateObject : function(dt){
@@ -79,6 +80,7 @@ var Monster = GameObject.extend({
     beHurt : function(damage){
         if(this._state === STATE_ACTIVE){
             this._currentHP -= damage;
+            //cc.log(this._currentHP);
             if(this._currentHP <= 0){
                 this._currentHP = 0;
                 this._state = STATE_NONE;

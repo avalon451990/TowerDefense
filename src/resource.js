@@ -56,6 +56,9 @@ var res = {
 
     Hero_teemo_plist : "res/Armature/hero_timo/hero_timo.plist",
     Hero_teemo_png : "res/Armature/hero_timo/hero_timo.png"
+
+    //Effect_png : "res/Armature/effect_001/effect_001.png"
+
 };
 
 var g_resources = [];
