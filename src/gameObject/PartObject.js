@@ -36,7 +36,7 @@ var PartObject = GameObject.extend({
 
     initSp : function(){
     	var url = "res/Armature/" + this._partData.armtPath + "/" + this._partData.armtName + ".csb";
-    	cc.log(url);
+    	//cc.log(url);
         ccs.armatureDataManager.addArmatureFileInfo(url);
         this._animation = new ccs.Armature(this._partData.armtName);
         this._animation.getAnimation().play("show");

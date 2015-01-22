@@ -11,6 +11,9 @@ var GameScene = cc.Layer.extend({
 	},
 
 	init:function(){
+        //加载资源;
+        cc.spriteFrameCache.addSpriteFrames(res.Main_UI_plist, res.Main_UI_png);
+
 		//背景层
 		this.backGroundlayer = new BackGroundLayer();
 		this.addChild(this.backGroundlayer, 0, 0);

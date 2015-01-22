@@ -7,6 +7,8 @@ var DisplayLayer = cc.Layer.extend({
 		this._super();
 		this.init();
         g_disPlayLayer = this;
+
+        this.createMonster(100101);
 	},
 	
 	init:function(){
@@ -32,12 +34,6 @@ var DisplayLayer = cc.Layer.extend({
 		this.initMap();
         //二次初始化;
         this.initMapArr();
-
-
-        var monster = GameObjectFactory.createGameObject(MONSTER,100253);
-        this._tmxMap.addChild(monster, 10);
-        monster.setPosition(g_pathArray[0]);
-        this._gameManager.addGameObject(monster);
 
         this.scheduleUpdate();
 
@@ -245,35 +241,71 @@ var DisplayLayer = cc.Layer.extend({
             return true;
         }
 
-        var index_X = getTouchIndex_X(localTouch.x);
-        var index_Y = getTouchIndex_Y(localTouch.y);
+        var gameObject = this.analysisTouch(localTouch.x, localTouch.y);
+        if(gameObject == null){
+            //分析点到了地图的哪里;
+            var index_X = getTouchIndex_X(localTouch.x);
+            var index_Y = getTouchIndex_Y(localTouch.y);
 
-        switch (this._mapArray[index_X][index_Y]){
-            case -1:{
-                cc.log("you can not touch there!");
-                break;
+            switch (this._mapArray[index_X][index_Y]){
+                case -1:{
+                    //无法点击这里;
+                    var block = cc.Sprite.createWithSpriteFrameName("block.png");
+                    this._tmxMap.addChild(block, 20);
+                    block.setPosition(cc.p(index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2, index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
+                    var fade = cc.FadeOut.create(0.5);
+                    var call = cc.CallFunc.create(block.removeFromParent, block);
+                    block.runAction(cc.Sequence(fade, call));
+                    break;
+                }
+                case 0:{
+                    //创建塔;
+                    break;
+                }
+                default :{
+                    break;
+                }
             }
-            case 0:{
-                cc.log("there is nothing!");
-                break;
-            }
-            case 1:{
-                cc.log("there is a tower!");
-                break;
-            }
-            case 2:{
-                cc.log("there is a part!");
-                break;
-            }
+        }else{
+            //分别处理点到对象的逻辑;
         }
         return true;
     },
 
     //创建怪物;
-    createMonster : function(id, posX, posY) {
-		
+    createMonster : function(id) {
+        var monster = GameObjectFactory.createGameObject(MONSTER,id);
+        this._tmxMap.addChild(monster, 10);
+        monster.setPosition(g_pathArray[0]);
+        this._gameManager.addGameObject(monster);
 	},
-	
+
+    //分析触点;
+    analysisTouch : function(posX, posY){
+        //查找怪物;
+        var objArr = this._gameManager.getObjArray(MONSTER);
+        for(var i = 0; i < objArr.length; i++){
+            if(cc.rectContainsPoint(objArr[i].getRect(), cc.p(posX, posY)) == true){
+                return objArr[i];
+            }
+        }
+        //塔；
+        objArr = this._gameManager.getObjArray(TOWER);
+        for(var i = 0; i < objArr.length; i++){
+            if(cc.rectContainsPoint(objArr[i].getRect(), cc.p(posX, posY)) == true){
+                return objArr[i];
+            }
+        }
+        //摆件;
+        objArr = this._gameManager.getObjArray(PART);
+        for(var i = 0; i < objArr.length; i++){
+            if(cc.rectContainsPoint(objArr[i].getRect(), cc.p(posX, posY)) == true){
+                return objArr[i];
+            }
+        }
+        return null;
+    },
+
     //增加蘑菇;
     addMushroom : function(value){
 

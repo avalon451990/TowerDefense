@@ -1,4 +1,5 @@
 
+
 var GailunTower = Tower.extend({
 
     ctor : function(id){
@@ -24,18 +25,24 @@ var GailunTower = Tower.extend({
         //攻击倒计时;
         this._atkTime -= dt;
 
-        switch (this._towerState){
-            case TOWER_STATE_WAITE:{
-                break;
-            }
-            case TOWER_STATE_ATK:{
-                if(this._atkTime <= 0){
-                    this._atkTime = this._towerData.atkSpeed;
-                    this._animation.getAnimation().play("attack");
-                    //开始攻击;
+        if(this._atkTime <= 0){
+            if(this._target != null){
+                this._atkTime = this._towerData.atkSpeed;
+                this._animation.getAnimation().play("attack");
+                //开始攻击;
+            }else{
+                //没有目标待机;
+                if(this._animation.getAnimation().getCurrentPercent() >= 100){
+                    this._animation.getAnimation().play("show");
                 }
-                break;
+            }
+        }else{
+            //攻击间隔没到;
+            if(this._animation.getAnimation().getCurrentPercent() >= 100){
+                this._animation.getAnimation().play("show");
             }
         }
+
     }
 });
+

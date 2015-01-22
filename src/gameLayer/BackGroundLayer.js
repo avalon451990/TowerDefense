@@ -8,7 +8,7 @@ var BackGroundLayer = cc.Layer.extend({
 	init:function(){
 		var size = cc.director.getWinSize();
 		//背景图
-		var background = new cc.Sprite(res.BackGround_png);
+		var background = cc.Sprite.create(res.BackGround_png);
 		background.attr({
 			x:size.width/2,
 			y:size.height/2
