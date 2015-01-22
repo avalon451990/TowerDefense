@@ -1,4 +1,6 @@
 var res = {
+    Main_UI_png : "res/UI_teemo_8M1-hd.png",
+    Main_UI_plist : "res/UI_teemo_8M1-hd.plist",
     BackGround_png : "res/background/Map_Ground_forrest.jpg",
 
     TmxMap_tmx01 : "res/map/Map_Forrest_01.tmx",

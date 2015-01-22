@@ -36,7 +36,7 @@ var Monster = GameObject.extend({
     initSp : function () {
 
         var url = "res/Armature/" + this._monsterData.resource + "/" + this._monsterData.action + ".csb";
-        cc.log(url);
+        //cc.log(url);
         ccs.armatureDataManager.addArmatureFileInfo(url);
         this._animation = new ccs.Armature(this._monsterData.action);
         this._animation.getAnimation().play("show");

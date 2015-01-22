@@ -17,6 +17,7 @@
         "src/gameLayer/UiLayer.js",
         "src/scene/GameScene.js",
         "src/tools/GameDataManager.js",
+        "src/tools/Constant.js",
 
         "src/gameObject/GameManager.js",
         "src/gameObject/GameObjectFactory.js",
