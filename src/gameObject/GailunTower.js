@@ -19,8 +19,6 @@ var GailunTower = Tower.extend({
         for(var i = 0; i < g_skill.length; i++){
             if(g_skill[i].id == this._towerData.normalAtk){
                 skillData = g_skill[i];
-            }else{
-                cc.assert(false, "fault!");
             }
         }
         url = "res/Armature/" + skillData.resouce1 + "/" + skillData.action + ".csb";
@@ -46,7 +44,8 @@ var GailunTower = Tower.extend({
                 this._atkAnimation.setVisible(true);
                 this._atkAnimation.getAnimation().play("show");
                 //开始攻击;
-                this._target.beHurt(this._towerData.atkPower);
+                this.attack();
+                //this._target.beHurt(this._towerData.atkPower);
             }else{
                 //没有目标待机;
                 if(this._animation.getAnimation().getCurrentPercent() >= 1){
@@ -63,6 +62,25 @@ var GailunTower = Tower.extend({
             this._atkAnimation.setVisible(false);
         }
 
+    },
+
+    attack : function(){
+        //所有在其攻击范围内的对象都受到伤害;
+        var objArr = g_disPlayLayer.getGameManager().getObjArray(MONSTER);
+        //遍历怪物;
+        for(var i = 0; i < objArr.length; i++){
+            if(cc.pDistance(this.getPosition(), objArr[i].getPosition()) <= this._towerData.atkRange){
+                objArr[i].beHurt(this._towerData.atkPower);
+            }
+        }
+
+        //便利摆件;
+        objArr = g_disPlayLayer.getGameManager().getObjArray(PART);
+        for(var i = 0; i < objArr.length; i++){
+            if(cc.pDistance(this.getPosition(), objArr[i].getPosition()) <= this._towerData.atkRange){
+                objArr[i].beHurt(this._towerData.atkPower);
+            }
+        }
     }
 });
 

@@ -54,9 +54,20 @@ var PartObject = GameObject.extend({
     beHurt : function(damage){
         this._currentHP -= damage;
         if(this._currentHP <= 0){
-            this._state = STATE_DEAD;
-            GameScene.getInstance().displaylayer.addMushroom(this._partData.mushroom);
-            GameScene.getInstance().displaylayer.addGold(this._partData.gold);
+            this._state = STATE_NONE;
+            g_disPlayLayer.addMushroom(this._partData.mushroom);
+            g_disPlayLayer.addGold(this._partData.gold);
         }
+    },
+
+    setPartSize : function(wid, hei){
+        this._width = wid;
+        this._height = hei;
+    },
+    getPartSizeWid : function(){
+        return this._width;
+    },
+    getPartSizeHei : function(){
+        return this._height;
     }
 });

@@ -8,7 +8,10 @@ var DisplayLayer = cc.Layer.extend({
 		this.init();
         g_disPlayLayer = this;
 
-        this.createMonster(100101);
+        this.schedule(function(){
+            this.createMonster(100101);
+        }, 1, cc.REPEAT_FOREVER, 0);
+        //this.createMonster(100101);
 	},
 	
 	init:function(){
@@ -107,6 +110,7 @@ var DisplayLayer = cc.Layer.extend({
                         }
 
                         part.setPosition(cc.p(posX, posY));
+                        part.setPartSize(wid, hei);
                         //修改地图;
                         var indexX = getTouchIndex_X(itemArr[j]["x"]);
                         var indexY = getTouchIndex_Y(itemArr[j]["y"]);
@@ -283,13 +287,22 @@ var DisplayLayer = cc.Layer.extend({
     //创建塔;
     createTower : function(posX, posY, id){
         var tower = GameObjectFactory.createGameObject(TOWER,0);
-        this._tmxMap.addChild(tower);
+        this._tmxMap.addChild(tower, 20);
         tower.setPosition(cc.p(posX*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2, posY*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
         this._gameManager.addGameObject(tower);
         //修改地图;
         this._mapArray[posX][posY] = 1;
     },
-
+    //修改二维地图数组;
+    changeMapArr : function(posX, posY, wid, hei){
+        var index_X = parseInt(posX/MAP_GRID_WIDTH);
+        var index_Y = parseInt(posY/MAP_GRID_HEIGHT);
+        for(var i = 0; i < wid; i++){
+            for(var j = 0; j < hei; j++){
+                this._mapArray[index_X-i][index_Y-j] = 0;
+            }
+        }
+    },
     //分析触点;
     analysisTouch : function(posX, posY){
         //查找怪物;

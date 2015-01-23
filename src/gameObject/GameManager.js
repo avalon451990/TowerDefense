@@ -106,6 +106,9 @@ GameManager = cc.Class.extend({
             this._partArr[i].updateObject(dt);
             if(this._partArr[i].getState() === STATE_DEAD){
                 this.removeGameObject(this._partArr[i]);
+                //修改地图的二维数组;
+                g_disPlayLayer.changeMapArr(this._partArr[i].getPositionX(), this._partArr[i].getPositionY(),
+                    this._partArr[i].getPartSizeWid(), this._partArr[i].getPartSizeHei());
             }
             if(this._partArr[i].getState() === STATE_NONE){
                 this._partArr[i].setState(STATE_DEAD);
@@ -148,6 +151,14 @@ GameManager = cc.Class.extend({
     //移除对象
     removeGameObject : function(obj){
         this._deadArr.push(obj);
+    },
+
+    reOrderObjectZ : function(){
+        //重排z坐标,只重排摆件，塔，怪物;
+        //按照x和y的坐标值来算;
+        for(var i = 0; i < this._partArr.length; i++){
+
+        }
     }
 });
 
