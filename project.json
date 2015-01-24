@@ -12,10 +12,15 @@
 
     "jsList" : [
         "src/resource.js",
+
+        "src/custom/BuildTower.js",
+
         "src/gameLayer/BackGroundLayer.js",
         "src/gameLayer/DisplayLayer.js",
         "src/gameLayer/UiLayer.js",
+
         "src/scene/GameScene.js",
+
         "src/tools/GameDataManager.js",
         "src/tools/Constant.js",
 

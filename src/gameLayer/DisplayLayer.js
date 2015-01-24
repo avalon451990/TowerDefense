@@ -97,7 +97,7 @@ var DisplayLayer = cc.Layer.extend({
                     var hei = parseInt(objArr.getProperties()["sizeH"]);
                     for(var j = 0; j < itemArr.length; j++) {
                         var part = GameObjectFactory.createGameObject(PART,objArr.getProperties()["id"]);
-                        this._tmxMap.addChild(part, 10);
+                        this._tmxMap.addChild(part);
                         this._gameManager.addGameObject(part);
                         part.setRectSize(wid, hei);
                         var posX = itemArr[j]["x"];

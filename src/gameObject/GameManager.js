@@ -142,6 +142,9 @@ GameManager = cc.Class.extend({
             }
             this._deadArr = [];
         }
+
+        //重排z值;
+        this.reOrderObjectZ();
     },
 
     //添加对象
@@ -154,10 +157,17 @@ GameManager = cc.Class.extend({
     },
 
     reOrderObjectZ : function(){
-        //重排z坐标,只重排摆件，塔，怪物;
-        //按照x和y的坐标值来算;
+        //重排z坐标,只重排摆件， 塔，怪物;
+        //按照y的坐标值来算;
+        for(var i = 0; i < this._towerArr.length; i++){
+            this._towerArr[i].setLocalZOrder(MAP_GRID_HEIGHT*MAP_HEIGHT-parseInt(this._towerArr[i].getPositionY()));
+        }
+        for(var i = 0; i < this._monsterArr.length; i++){
+            this._monsterArr[i].setLocalZOrder(MAP_GRID_HEIGHT*MAP_HEIGHT-parseInt(this._monsterArr[i].getPositionY()));
+        }
+        //摆件的z值设为负的;
         for(var i = 0; i < this._partArr.length; i++){
-
+            this._partArr[i].setLocalZOrder(MAP_GRID_HEIGHT*MAP_HEIGHT-parseInt(this._partArr[i].getPositionY()));
         }
     }
 });

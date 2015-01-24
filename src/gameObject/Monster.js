@@ -43,6 +43,19 @@ var Monster = GameObject.extend({
         this.addChild(this._animation);
 
         this._rect = cc.rect(-20, -25, 40, 50);
+
+        //血条;
+        this._hpBg = cc.Sprite.create("res/ui_hp_board.png");
+        this.addChild(this._hpBg);
+        this._hpBg.setPosition(cc.p(0, this._rect.height/2));
+        this._hpBar =new cc.ProgressTimer(cc.Sprite.create("res/ui_hp_tiao.png"));
+        this._hpBar.setPosition(cc.p(this._hpBg.getContentSize().width/2, this._hpBg.getContentSize().height/2));
+        this._hpBg.addChild(this._hpBar);
+        this._hpBar.setType(cc.ProgressTimer.TYPE_BAR);
+        this._hpBar.setMidpoint(cc.p(0, 0.5));
+        this._hpBar.setBarChangeRate(cc.p(1, 0));
+        this._hpBar.setPercentage(100);
+        this._hpBg.setVisible(false);
     },
 
     updateObject : function(dt){
@@ -80,7 +93,8 @@ var Monster = GameObject.extend({
     beHurt : function(damage){
         if(this._state === STATE_ACTIVE){
             this._currentHP -= damage;
-            //cc.log(this._currentHP);
+            this._hpBg.setVisible(true);
+            this._hpBar.setPercentage(this._currentHP*100/this._monsterData.hp);
             if(this._currentHP <= 0){
                 this._currentHP = 0;
                 this._state = STATE_NONE;

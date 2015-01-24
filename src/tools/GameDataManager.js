@@ -19,6 +19,16 @@ var g_disPlayLayer = null;//在这里保存了一份display;
 
 var g_currentLevel = 100101;
 
+//按照索引获取英雄数据;
+var getHeroDataById = function(id){
+    for(var i = 0; i < g_heroData.length; i++){
+        if(g_heroData[i].id == id){
+            return g_heroData[i];
+        }
+    }
+    return null;
+}
+
 //取得触摸的x，y索引;
 var getTouchIndex_X = function(posX){
     return parseInt(posX/MAP_GRID_WIDTH);
