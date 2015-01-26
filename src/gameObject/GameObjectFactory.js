@@ -10,7 +10,7 @@ GameObjectFactory._createMonster = function(id){
 };
 //创建塔;
 GameObjectFactory._createTower = function(id){
-    switch (id){
+    switch ((id-40011)/10){
         case 0:{
             return new GailunTower(40011);
             break;

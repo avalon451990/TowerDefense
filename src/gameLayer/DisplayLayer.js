@@ -3,6 +3,7 @@ var DisplayLayer = cc.Layer.extend({
 	_gameManager : null,
     _levelData : null,
     _mapArray : [], //数组中-1表示无法放置，0表示空，1表示塔，2表示摆件;
+    _buildTower : null,//造塔按钮;
 	ctor:function(){
 		this._super();
 		this.init();
@@ -11,7 +12,11 @@ var DisplayLayer = cc.Layer.extend({
         this.schedule(function(){
             this.createMonster(100101);
         }, 1, cc.REPEAT_FOREVER, 0);
-        //this.createMonster(100101);
+
+        this._buildTower = new BuildTower(40011, 40021, 40031, 40041, 40051, 40061);
+        this._tmxMap.addChild(this._buildTower, MAP_GRID_HEIGHT*MAP_HEIGHT+1);
+        this._buildTower.setVisible(false);
+        this._buildTower.initWithTarget(this, this.buildTowerCallBack);
 	},
 	
 	init:function(){
@@ -245,6 +250,10 @@ var DisplayLayer = cc.Layer.extend({
             return true;
         }
 
+        if(this._buildTower.isVisible()){
+            this._buildTower.hideBtn();
+            return true;
+        }
         var gameObject = this.analysisTouch(localTouch.x, localTouch.y);
         if(gameObject == null){
             //分析点到了地图的哪里;
@@ -256,6 +265,7 @@ var DisplayLayer = cc.Layer.extend({
                     //无法点击这里;
                     var block = cc.Sprite.createWithSpriteFrameName("block.png");
                     this._tmxMap.addChild(block, 20);
+                    block.setScale(1.5);
                     block.setPosition(cc.p(index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2, index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
                     var fade = cc.FadeOut.create(0.5);
                     var call = cc.CallFunc.create(block.removeFromParent, block);
@@ -264,7 +274,10 @@ var DisplayLayer = cc.Layer.extend({
                 }
                 case 0:{
                     //创建塔;
-                    this.createTower(index_X, index_Y, 0);
+                    this._buildTower.setPosition(cc.p(index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2,
+                            index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
+                    this._buildTower.showBtn(cc.p(index_X, index_Y));
+                    //this.createTower(index_X, index_Y, 0);
                     break;
                 }
                 default :{
@@ -286,7 +299,7 @@ var DisplayLayer = cc.Layer.extend({
 	},
     //创建塔;
     createTower : function(posX, posY, id){
-        var tower = GameObjectFactory.createGameObject(TOWER,0);
+        var tower = GameObjectFactory.createGameObject(TOWER,id);
         this._tmxMap.addChild(tower, 20);
         tower.setPosition(cc.p(posX*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2, posY*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
         this._gameManager.addGameObject(tower);
@@ -329,6 +342,12 @@ var DisplayLayer = cc.Layer.extend({
         return null;
     },
 
+    //造塔回调;
+    buildTowerCallBack : function(sender){
+        var id = sender.getTag();
+        cc.log(id);
+        this.createTower(getTouchIndex_X(sender.getPositionX()), getTouchIndex_Y(sender.getPositionY()), id);
+    },
     //增加蘑菇;
     addMushroom : function(value){
 

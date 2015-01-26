@@ -39,6 +39,9 @@ var Tower = GameObject.extend({
 
     },
 
+    getTowerData : function(){
+        return this._towerData;
+    },
 
     //获得目标
     getTargetObject : function(){

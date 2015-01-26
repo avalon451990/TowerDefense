@@ -14,6 +14,7 @@
         "src/resource.js",
 
         "src/custom/BuildTower.js",
+        "src/custom/UpSellTower.js",
 
         "src/gameLayer/BackGroundLayer.js",
         "src/gameLayer/DisplayLayer.js",

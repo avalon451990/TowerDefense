@@ -55,6 +55,7 @@ var PartObject = GameObject.extend({
         //血条;
         this._hpBg = cc.Sprite.create("res/ui_hp_board.png");
         this.addChild(this._hpBg);
+        this._hpBg.setScale(0.8);
         this._hpBg.setPosition(cc.p(0, MAP_GRID_HEIGHT/2*this._height));
         this._hpBar =new cc.ProgressTimer(cc.Sprite.create("res/ui_hp_tiao.png"));
         this._hpBar.setPosition(cc.p(this._hpBg.getContentSize().width/2, this._hpBg.getContentSize().height/2));
@@ -76,6 +77,8 @@ var PartObject = GameObject.extend({
 
     beHurt : function(damage){
         this._currentHP -= damage;
+        this.unschedule(this.hideHPBar);
+        this.schedule(this.hideHPBar, 0, null, 5.0);
         this._hpBg.setVisible(true);
         this._hpBar.setPercentage(this._currentHP*100/this._partData.hp);
         if(this._currentHP <= 0){
@@ -83,6 +86,9 @@ var PartObject = GameObject.extend({
             g_disPlayLayer.addMushroom(this._partData.mushroom);
             g_disPlayLayer.addGold(this._partData.gold);
         }
+    },
+    hideHPBar : function(dt){
+        this._hpBg.setVisible(false);
     },
 
     setPartSize : function(wid, hei){

@@ -47,6 +47,7 @@ var Monster = GameObject.extend({
         //血条;
         this._hpBg = cc.Sprite.create("res/ui_hp_board.png");
         this.addChild(this._hpBg);
+        this._hpBg.setScale(0.8);
         this._hpBg.setPosition(cc.p(0, this._rect.height/2));
         this._hpBar =new cc.ProgressTimer(cc.Sprite.create("res/ui_hp_tiao.png"));
         this._hpBar.setPosition(cc.p(this._hpBg.getContentSize().width/2, this._hpBg.getContentSize().height/2));
@@ -93,6 +94,8 @@ var Monster = GameObject.extend({
     beHurt : function(damage){
         if(this._state === STATE_ACTIVE){
             this._currentHP -= damage;
+            this.unschedule(this.hideHPBar);
+            this.schedule(this.hideHPBar, 0, null, 5.0);
             this._hpBg.setVisible(true);
             this._hpBar.setPercentage(this._currentHP*100/this._monsterData.hp);
             if(this._currentHP <= 0){
@@ -102,5 +105,9 @@ var Monster = GameObject.extend({
                 GameScene.getGameLayer().displaylayer.addGold(this._monsterData.gold);
             }
         }
+    },
+
+    hideHPBar : function(dt){
+        this._hpBg.setVisible(false);
     }
 });
