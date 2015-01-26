@@ -8,6 +8,8 @@ var Tower = GameObject.extend({
     _animation: null,//动画;
     _target : null,//目标;
     _towerState : null,//塔的状态;
+    _width : 1,
+    _height : 1,
 
     ctor : function(id){
         this._super();
@@ -17,6 +19,7 @@ var Tower = GameObject.extend({
         if(this.initData() == false){
             cc.assert(false, "there is no tower data!");
         }
+        this.setRectSize(1, 1);
         //this._atkTime = this._towerData.atkSpeed;
     },
     initData: function(){
@@ -35,6 +38,12 @@ var Tower = GameObject.extend({
             return false;
         }
     },
+
+    upGrade : function(){
+        this._towerId += 1;
+        this.initData();
+    },
+
     updateObject : function(dt){
 
     },
@@ -73,6 +82,17 @@ var Tower = GameObject.extend({
     },
     showLoseAction : function(){
         this._animation.getAnimation().play("lose");
+    },
+
+    setTowerSize : function(wid, hei){
+        this._width = wid;
+        this._height = hei;
+    },
+    getTowerSizeWid : function(){
+        return this._width;
+    },
+    getTowerSizeHei : function(){
+        return this._height;
     }
 
 });

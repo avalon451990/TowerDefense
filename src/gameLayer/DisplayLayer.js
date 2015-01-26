@@ -4,6 +4,7 @@ var DisplayLayer = cc.Layer.extend({
     _levelData : null,
     _mapArray : [], //数组中-1表示无法放置，0表示空，1表示塔，2表示摆件;
     _buildTower : null,//造塔按钮;
+    _upSellTower : null,//出售升级;
 	ctor:function(){
 		this._super();
 		this.init();
@@ -13,10 +14,15 @@ var DisplayLayer = cc.Layer.extend({
             this.createMonster(100101);
         }, 1, cc.REPEAT_FOREVER, 0);
 
+        //造塔控件;
         this._buildTower = new BuildTower(40011, 40021, 40031, 40041, 40051, 40061);
         this._tmxMap.addChild(this._buildTower, MAP_GRID_HEIGHT*MAP_HEIGHT+1);
         this._buildTower.setVisible(false);
         this._buildTower.initWithTarget(this, this.buildTowerCallBack);
+        //升级，出售控件;
+        this._upSellTower = new UpSellTower(this, this.upSellTower);
+        this._tmxMap.addChild(this._upSellTower, MAP_GRID_HEIGHT*MAP_HEIGHT+1);
+        this._upSellTower.setVisible(false);
 	},
 	
 	init:function(){
@@ -254,12 +260,16 @@ var DisplayLayer = cc.Layer.extend({
             this._buildTower.hideBtn();
             return true;
         }
+        if(this._upSellTower.isVisible()){
+            this._upSellTower.hideBtn();
+            return true;
+        }
+
+        var index_X = getTouchIndex_X(localTouch.x);
+        var index_Y = getTouchIndex_Y(localTouch.y);
         var gameObject = this.analysisTouch(localTouch.x, localTouch.y);
         if(gameObject == null){
             //分析点到了地图的哪里;
-            var index_X = getTouchIndex_X(localTouch.x);
-            var index_Y = getTouchIndex_Y(localTouch.y);
-
             switch (this._mapArray[index_X][index_Y]){
                 case -1:{
                     //无法点击这里;
@@ -277,7 +287,6 @@ var DisplayLayer = cc.Layer.extend({
                     this._buildTower.setPosition(cc.p(index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2,
                             index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
                     this._buildTower.showBtn(cc.p(index_X, index_Y));
-                    //this.createTower(index_X, index_Y, 0);
                     break;
                 }
                 default :{
@@ -286,6 +295,17 @@ var DisplayLayer = cc.Layer.extend({
             }
         }else{
             //分别处理点到对象的逻辑;
+            var type = gameObject.getType();
+            cc.log(type);
+            switch (type){
+                case TOWER:{
+                    var posX = index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2;
+                    var posY = index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2;
+                    this._upSellTower.setPosition(cc.p(posX, posY));
+                    this._upSellTower.showBtn(cc.p(index_X, index_Y), gameObject);
+                    break;
+                }
+            }
         }
         return true;
     },
@@ -347,6 +367,21 @@ var DisplayLayer = cc.Layer.extend({
         var id = sender.getTag();
         cc.log(id);
         this.createTower(getTouchIndex_X(sender.getPositionX()), getTouchIndex_Y(sender.getPositionY()), id);
+    },
+    //升级出售;
+    upSellTower : function(sender){
+        var id = sender.getTag();
+        if(id == 0){
+            //升级塔;
+            this.addMushroom(-sender.getUpgradePrice());
+            sender.getTower().upGrade();
+        }else if(id == 1){
+            //出售并修改地图;
+            this.addMushroom(sender.getTower().getTowerData().sellPrice);
+            this.changeMapArr(sender.getTower().getPositionX(), sender.getTower().getPositionY(),
+                sender.getTower().getTowerSizeWid(), sender.getTower().getTowerSizeHei());
+            sender.getTower().removeFromParent();
+        }
     },
     //增加蘑菇;
     addMushroom : function(value){
