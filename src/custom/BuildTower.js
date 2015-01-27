@@ -158,7 +158,22 @@ var BuildTower = cc.Node.extend({
     },
 
 
-    showBtn : function(gridTouch){
+    //刷新建造按钮状态;
+    updateBtn : function(mushroom){
+        if(this.isVisible() == true){
+            for(var i = 0; i < this._menuItem.length; i++){
+                var data = getHeroDataById(this._menuItem[i].getTag());
+                if(data.buildCost <= mushroom){
+                    this._menuItem[i].setEnabled(true);
+                }else{
+                    this._menuItem[i].setEnabled(false);
+                    this._menuItem[i].selected();
+                }
+            }
+        }
+    },
+
+    showBuildBtn : function(gridTouch){
         this._gridTouch = gridTouch;
         this.setVisible(true);
         for(var i = 0; i < this._menuItem.length; i++){

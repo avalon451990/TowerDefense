@@ -8,11 +8,9 @@ var Tower = GameObject.extend({
     _animation: null,//动画;
     _target : null,//目标;
     _towerState : null,//塔的状态;
-    _width : 1,
-    _height : 1,
 
     ctor : function(id){
-        this._super();
+        this._super(TOWER);
         this._towerId = id;
         this._type = TOWER;
         this._state = STATE_STAY;
@@ -48,6 +46,20 @@ var Tower = GameObject.extend({
 
     },
 
+    updateTips : function(mushroom){
+        if(this._towerData.level >= 3){
+            return;
+        }else{
+            var data = getHeroDataById(this._towerId+1);
+            if(data != null){
+                if(data.buildCost <= mushroom){
+                    this.showTips();
+                }
+            }
+            this.hideTips();
+        }
+    },
+
     getTowerData : function(){
         return this._towerData;
     },
@@ -64,17 +76,11 @@ var Tower = GameObject.extend({
                 }
             }
         }
-//        //寻找摆件;
-//        var objArr = g_disPlayLayer.getGameManager().getObjArray(PART);
-//        for(var i = 0; i < objArr.length; i++){
-//            if(objArr[i].getState() === STATE_ACTIVE){
-//                if(cc.pDistance(objArr[i].getPosition(), this.getPosition()) <= this._towerData.atkRange){
-//                    this._target = objArr[i];
-//                    return;
-//                }
-//            }
-//        }
         this._target = null;
+    },
+
+    setTarget : function(target){
+        this._target = target;
     },
 
     showWinAction : function(){
@@ -82,17 +88,7 @@ var Tower = GameObject.extend({
     },
     showLoseAction : function(){
         this._animation.getAnimation().play("lose");
-    },
-
-    setTowerSize : function(wid, hei){
-        this._width = wid;
-        this._height = hei;
-    },
-    getTowerSizeWid : function(){
-        return this._width;
-    },
-    getTowerSizeHei : function(){
-        return this._height;
     }
+
 
 });

@@ -6,7 +6,7 @@ var Monster = GameObject.extend({
     _currentWayPointIndex: 0,
 
     ctor : function(monsterId){
-        this._super();
+        this._super(MONSTER);
         this._monsterId = monsterId;
         this._type = MONSTER;
         this._state = STATE_ACTIVE;

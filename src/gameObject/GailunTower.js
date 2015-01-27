@@ -30,7 +30,12 @@ var GailunTower = Tower.extend({
     },
 
     updateObject : function(dt){
-        if(this._target == null || this._target.getState != STATE_ACTIVE
+        if(this._target != null){
+            cc.log(this._target.getState());
+            cc.log(this._target.getPosition().x);
+            cc.log(this.getPosition().x);
+        }
+        if(this._target == null || this._target.getState() != STATE_ACTIVE
             || cc.pDistance(this._target.getPosition(), this.getPosition()) > this._towerData.atkRange){
             this.getTargetObject();
         }
@@ -41,8 +46,10 @@ var GailunTower = Tower.extend({
             if(this._target != null){
                 this._atkTime = this._towerData.atkSpeed;
                 this._animation.getAnimation().play("attack");
+                this._animation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed);
                 this._atkAnimation.setVisible(true);
                 this._atkAnimation.getAnimation().play("show");
+                this._atkAnimation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed);
                 //开始攻击;
                 this.attack();
                 //this._target.beHurt(this._towerData.atkPower);

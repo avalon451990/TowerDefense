@@ -108,7 +108,7 @@ GameManager = cc.Class.extend({
                 this.removeGameObject(this._partArr[i]);
                 //修改地图的二维数组;
                 g_disPlayLayer.changeMapArr(this._partArr[i].getPositionX(), this._partArr[i].getPositionY(),
-                    this._partArr[i].getPartSizeWid(), this._partArr[i].getPartSizeHei());
+                    this._partArr[i].getObjectWidth(), this._partArr[i].getObjectHeight());
             }
             if(this._partArr[i].getState() === STATE_NONE){
                 this._partArr[i].setState(STATE_DEAD);

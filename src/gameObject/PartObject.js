@@ -4,20 +4,10 @@ var PartObject = GameObject.extend({
     _partData : null,
     _currentHP : null,
 
-    ctor : function(partId, wid, hei){
-        this._super();
+    ctor : function(partId){
+        this._super(PART);
 
         this._partId = partId;
-        if(wid == undefined){
-            this._width = 1;
-        } else{
-            this._width = wid;
-        }
-        if(hei == undefined){
-            this._height = 1;
-        } else{
-            this._height = hei;
-        }
         this._type = PART;
         this._state = STATE_ACTIVE;
         if(this.initData() == false){

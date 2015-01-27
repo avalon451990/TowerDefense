@@ -33,12 +33,13 @@ var UpSellTower = cc.Node.extend({
         var nor = cc.Sprite.createWithSpriteFrameName("ui_build_lvlupbutton.png");
         var sel = cc.Sprite.createWithSpriteFrameName("ui_build_lvlupbutton.png");
         sel.setColor(cc.color(100, 100, 100));
-        var item = cc.MenuItemImage(nor, sel, this.menuItemCallBack, this);
+        var item = cc.MenuItemSprite(nor, sel, this.menuItemCallBack, this);
         this._menu.addChild(item);
+        item.setScale(0.8);
         item.setTag(0);
         //价格;
         var label = cc.LabelTTF.create("", "arial", 20);
-        label.setPosition(cc.p(item.getContentSize().width/2, 15));
+        label.setPosition(cc.p(item.getContentSize().width/2+6, 15));
         item.addChild(label);
 
         this._menuItem.push(item);
@@ -47,12 +48,13 @@ var UpSellTower = cc.Node.extend({
         nor = cc.Sprite.createWithSpriteFrameName("ui_build_sellbutton.png");
         sel = cc.Sprite.createWithSpriteFrameName("ui_build_sellbutton.png");
         sel.setColor(cc.color(100, 100, 100));
-        item = cc.MenuItemImage(nor, sel, this.menuItemCallBack, this);
+        item = cc.MenuItemSprite(nor, sel, this.menuItemCallBack, this);
         this._menu.addChild(item);
+        item.setScale(0.8);
         item.setTag(1);
         //价格;
         label = cc.LabelTTF.create("", "arial", 20);
-        label.setPosition(cc.p(item.getContentSize().width/2, 15));
+        label.setPosition(cc.p(item.getContentSize().width/2+5, 15));
         item.addChild(label);
 
         this._menuItem.push(item);
@@ -60,16 +62,30 @@ var UpSellTower = cc.Node.extend({
         //满级按钮;
         nor = cc.Sprite.createWithSpriteFrameName("ui_build_max.png");
         sel = cc.Sprite.createWithSpriteFrameName("ui_build_max.png");
-        item = cc.MenuItemImage(nor, sel, this.menuItemCallBack, this);
+        item = cc.MenuItemSprite(nor, sel, this.menuItemCallBack, this);
         this._menu.addChild(item);
         this._menuItem.push(item);
+        item.setScale(0.8);
     },
 
     getTower : function(){
         return this._tower;
     },
 
-    showBtn : function(gridTouch, tower){
+    //刷新升级按钮;
+    updateBtn : function(mushroom){
+        if(this.isVisible() == true){
+            cc.log("upSellbtn" + "/" +this._upPrice+ "/" + mushroom);
+            if(this._upPrice <= mushroom){
+                this._menuItem[0].setEnabled(true);
+            }else{
+                this._menuItem[0].setEnabled(false);
+                this._menuItem[0].selected();
+            }
+        }
+    },
+
+    showUpSellBtn : function(gridTouch, tower){
         this._tower = tower;
         this._gridTouch = gridTouch;
         //计算两个按钮的位置;

@@ -5,14 +5,18 @@ var DisplayLayer = cc.Layer.extend({
     _mapArray : [], //数组中-1表示无法放置，0表示空，1表示塔，2表示摆件;
     _buildTower : null,//造塔按钮;
     _upSellTower : null,//出售升级;
+    _gameData : {
+            mushroomCount : 0,//蘑菇数量;
+            goldCount : 0//金币数量;
+        },//游戏数据;
 	ctor:function(){
 		this._super();
 		this.init();
         g_disPlayLayer = this;
 
-        this.schedule(function(){
-            this.createMonster(100101);
-        }, 1, cc.REPEAT_FOREVER, 0);
+//        this.schedule(function(){
+//            this.createMonster(100101);
+//        }, 1, cc.REPEAT_FOREVER, 0);
 
         //造塔控件;
         this._buildTower = new BuildTower(40011, 40021, 40031, 40041, 40051, 40061);
@@ -23,6 +27,9 @@ var DisplayLayer = cc.Layer.extend({
         this._upSellTower = new UpSellTower(this, this.upSellTower);
         this._tmxMap.addChild(this._upSellTower, MAP_GRID_HEIGHT*MAP_HEIGHT+1);
         this._upSellTower.setVisible(false);
+        //游戏数据;
+        this._gameData.mushroomCount = this._levelData.startMushuroom;
+        this._gameData.goldCount = this._levelData.goldNum;
 	},
 	
 	init:function(){
@@ -121,7 +128,6 @@ var DisplayLayer = cc.Layer.extend({
                         }
 
                         part.setPosition(cc.p(posX, posY));
-                        part.setPartSize(wid, hei);
                         //修改地图;
                         var indexX = getTouchIndex_X(itemArr[j]["x"]);
                         var indexY = getTouchIndex_Y(itemArr[j]["y"]);
@@ -246,6 +252,20 @@ var DisplayLayer = cc.Layer.extend({
         if(this._teemo.getTeemoHP() <= 0){
             this.gameOver(0);
         }
+
+        //刷新造塔和升级按钮;
+        if(this._buildTower.isVisible()){
+            this._buildTower.updateBtn(this._gameData.mushroomCount);
+        }
+        if(this._upSellTower.isVisible()){
+            this._upSellTower.updateBtn(this._gameData.mushroomCount);
+        }
+
+        //刷新所有塔的能否升级的提示状态;
+        var objArr = this._gameManager.getObjArray(TOWER);
+        for(var i = 0; i < objArr.length; i++){
+            objArr[i].updateTips(this._gameData.mushroomCount);
+        }
     },
 
     onTouchBegan : function(touch, event){
@@ -286,7 +306,7 @@ var DisplayLayer = cc.Layer.extend({
                     //创建塔;
                     this._buildTower.setPosition(cc.p(index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2,
                             index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
-                    this._buildTower.showBtn(cc.p(index_X, index_Y));
+                    this._buildTower.showBuildBtn(cc.p(index_X, index_Y));
                     break;
                 }
                 default :{
@@ -296,13 +316,37 @@ var DisplayLayer = cc.Layer.extend({
         }else{
             //分别处理点到对象的逻辑;
             var type = gameObject.getType();
-            cc.log(type);
             switch (type){
                 case TOWER:{
-                    var posX = index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2;
-                    var posY = index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2;
-                    this._upSellTower.setPosition(cc.p(posX, posY));
-                    this._upSellTower.showBtn(cc.p(index_X, index_Y), gameObject);
+                    this._upSellTower.setPosition(cc.p(index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2,
+                            index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
+                    this._upSellTower.showUpSellBtn(cc.p(index_X, index_Y), gameObject);
+                    break;
+                }
+                case MONSTER:{}//怪物和摆件是同样的操作;
+                case PART:{
+                    if(gameObject.isTipsShowing() == true){
+                        gameObject.hideTips();
+                        gameObject = null;//这一句是为了将塔额目标置空;
+                    }else {
+                        //1.将所有的怪物和摆件的标志置为空;
+                        var objArr = this._gameManager.getObjArray(MONSTER);
+                        for (var i = 0; i < objArr.length; i++) {
+                            objArr[i].hideTips();
+                        }
+                        objArr = this._gameManager.getObjArray(PART);
+                        for (var i = 0; i < objArr.length; i++) {
+                            objArr[i].hideTips();
+                        }
+
+                        //2.显示该物件标志
+                        gameObject.showTips();
+                    }
+                    //将其设置为所有塔的目标;
+                    objArr = this._gameManager.getObjArray(TOWER);
+                    for(var i = 0; i < objArr.length; i++){
+                        objArr[i].setTarget(gameObject);
+                    }
                     break;
                 }
             }
@@ -365,7 +409,8 @@ var DisplayLayer = cc.Layer.extend({
     //造塔回调;
     buildTowerCallBack : function(sender){
         var id = sender.getTag();
-        cc.log(id);
+        var data = getHeroDataById(id);
+        this.addMushroom(-data.buildCost);
         this.createTower(getTouchIndex_X(sender.getPositionX()), getTouchIndex_Y(sender.getPositionY()), id);
     },
     //升级出售;
@@ -379,18 +424,25 @@ var DisplayLayer = cc.Layer.extend({
             //出售并修改地图;
             this.addMushroom(sender.getTower().getTowerData().sellPrice);
             this.changeMapArr(sender.getTower().getPositionX(), sender.getTower().getPositionY(),
-                sender.getTower().getTowerSizeWid(), sender.getTower().getTowerSizeHei());
-            sender.getTower().removeFromParent();
+                sender.getTower().getObjectWidth(), sender.getTower().getObjectHeight());
+            sender.getTower().setState(STATE_NONE);
         }
     },
     //增加蘑菇;
     addMushroom : function(value){
-
+        this._gameData.mushroomCount += value;
+        if(this._gameData.mushroomCount < 0){
+            this._gameData.mushroomCount = 0;
+        }
+        cc.log(this._gameData.mushroomCount);
     },
 
     //增加金币;
     addGold : function(value){
-
+        this._gameData.goldCount += value;
+        if(this._gameData.goldCount < 0){
+            this._gameData.goldCount = 0;
+        }
     },
 
     //受伤;
