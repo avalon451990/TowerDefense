@@ -75,7 +75,6 @@ var UpSellTower = cc.Node.extend({
     //刷新升级按钮;
     updateBtn : function(mushroom){
         if(this.isVisible() == true){
-            cc.log("upSellbtn" + "/" +this._upPrice+ "/" + mushroom);
             if(this._upPrice <= mushroom){
                 this._menuItem[0].setEnabled(true);
             }else{

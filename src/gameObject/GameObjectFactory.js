@@ -6,6 +6,9 @@ var GameObjectFactory = cc.Class.extend({
 
 //创建怪物;
 GameObjectFactory._createMonster = function(id){
+    if(id == 0){
+        return null;
+    }
     return new Monster(id);
 };
 //创建塔;

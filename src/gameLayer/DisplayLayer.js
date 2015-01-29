@@ -1,10 +1,18 @@
 
 var DisplayLayer = cc.Layer.extend({
 	_gameManager : null,
+    _waveManager : null,
     _levelData : null,
     _mapArray : [], //数组中-1表示无法放置，0表示空，1表示塔，2表示摆件;
     _buildTower : null,//造塔按钮;
     _upSellTower : null,//出售升级;
+    _outMonsterTime : 0,
+    _gameSpeed : 1,//游戏速度;
+
+    _mushroomLabel : null,//蘑菇个数标签;
+    _waveTips : null,//波数提示;
+    _pauseSp : null,//暂停提示;
+
     _gameData : {
             mushroomCount : 0,//蘑菇数量;
             goldCount : 0//金币数量;
@@ -13,10 +21,6 @@ var DisplayLayer = cc.Layer.extend({
 		this._super();
 		this.init();
         g_disPlayLayer = this;
-
-//        this.schedule(function(){
-//            this.createMonster(100101);
-//        }, 1, cc.REPEAT_FOREVER, 0);
 
         //造塔控件;
         this._buildTower = new BuildTower(40011, 40021, 40031, 40041, 40051, 40061);
@@ -52,9 +56,15 @@ var DisplayLayer = cc.Layer.extend({
         }
 
         this._gameManager = new GameManager();
+        this._waveManager = new WaveManager();
 		this.initMap();
         //二次初始化;
         this.initMapArr();
+
+        //初始化怪物波束;
+        this.initMonsterWave();
+
+        this.initUI();
 
         this.scheduleUpdate();
 
@@ -67,7 +77,70 @@ var DisplayLayer = cc.Layer.extend({
         cc.eventManager.addListener(listener, this);
 		return true;
 	},
-	
+
+    //初始化UI;
+    initUI : function(){
+        var size = cc.winSize;
+        //顶条;
+        var topBar = cc.Scale9Sprite.createWithSpriteFrameName("ui_battle_hengtiao.png", cc.rect(30, 0, 4, 30));
+        topBar.setContentSize(cc.size(960, 56));
+        this.addChild(topBar, 10);
+        topBar.setPosition(cc.p(size.width/2, size.height-topBar.getContentSize().height/2));
+        //蘑菇数量;
+        var mushroomIcon = cc.Sprite.createWithSpriteFrameName("UI_Battle_Mushroom.png");
+        mushroomIcon.setPosition(cc.p(40, topBar.getContentSize().height/2));
+        topBar.addChild(mushroomIcon);
+        //个数标签;
+        this._mushroomLabel = cc.LabelAtlas.create(this._levelData.startMushuroom, "res/number.png", 30, 32, '0');
+        this._mushroomLabel.setPosition(cc.p(150, topBar.getContentSize().height/2));
+        topBar.addChild(this._mushroomLabel);
+        this._mushroomLabel.setAnchorPoint(cc.p(0.5, 0.5));
+
+        //波数提示;
+        this._waveTips = new WaveTips();
+        this._waveTips.setPosition(cc.p(topBar.getContentSize().width/2, topBar.getContentSize().height/2));
+        topBar.addChild(this._waveTips);
+        this._waveTips.updateLabel(0, this._waveManager.getWaveCount());
+        //暂停提示;
+        this._pauseSp = cc.Sprite.createWithSpriteFrameName("ui_pausing.png");
+        this._pauseSp.setPosition(cc.p(topBar.getContentSize().width/2, topBar.getContentSize().height/2));
+        topBar.addChild(this._pauseSp);
+        this._pauseSp.setVisible(false);
+        {
+            var menu = cc.Menu.create();
+            menu.setPosition(cc.p(0, 0));
+            topBar.addChild(menu);
+            //暂停， 加速，菜单三个按钮;
+            var pauseItem = cc.MenuItemToggle.create(
+                cc.MenuItemSprite.create(cc.Sprite.createWithSpriteFrameName("ui_battle_zanting.png"),
+                    cc.Sprite.createWithSpriteFrameName("ui_battle_zanting.png")),
+                cc.MenuItemSprite.create(cc.Sprite.createWithSpriteFrameName("ui_battle_jixu.png"),
+                    cc.Sprite.createWithSpriteFrameName("ui_battle_jixu.png")),
+                this.menuCallBack, this);
+            pauseItem.setTag(0);
+            pauseItem.setPosition(cc.p(720, topBar.getContentSize().height/2-5));
+            menu.addChild(pauseItem);
+
+            var speedItem = cc.MenuItemToggle.create(
+                cc.MenuItemSprite.create(cc.Sprite.createWithSpriteFrameName("ui_battle_X1.png"),
+                    cc.Sprite.createWithSpriteFrameName("ui_battle_X1.png")),
+                cc.MenuItemSprite.create(cc.Sprite.createWithSpriteFrameName("ui_battle_X2.png"),
+                    cc.Sprite.createWithSpriteFrameName("ui_battle_X2.png")),
+                this.menuCallBack, this);
+            speedItem.setTag(1);
+            speedItem.setPosition(cc.p(pauseItem.getPositionX()+85, pauseItem.getPositionY()));
+            menu.addChild(speedItem);
+
+            var mainItem = cc.MenuItemSprite.create(
+                cc.Sprite.createWithSpriteFrameName("ui_battle_caidan01.png"),
+                    cc.Sprite.createWithSpriteFrameName("ui_battle_caidan01.png"),
+                this.menuCallBack, this);
+            mainItem.setTag(2);
+            mainItem.setPosition(cc.p(speedItem.getPositionX()+85, speedItem.getPositionY()));
+            menu.addChild(mainItem);
+        }
+    },
+
 	//初始化地图;
 	initMap:function(){
         var url = "res/map/" + this._levelData.tmx + ".tmx";
@@ -89,14 +162,16 @@ var DisplayLayer = cc.Layer.extend({
             
             switch (objArr.getGroupName()){
                 case "path":{//路径点;
+                    var array = [];
                     var pathArr = objArr.getObjects();
                     for(var j = 0; j < pathArr.length; j++){
-                    	g_pathArray.push(cc.p(pathArr[j]["x"], pathArr[j]["y"]));
+                        array.push(cc.p(pathArr[j]["x"], pathArr[j]["y"]));
 
                         var label = new cc.LabelTTF(j.toString(), "arial", 30);
-                        label.setPosition(g_pathArray[j]);
+                        label.setPosition(array[j]);
                         this._tmxMap.addChild(label, 10);
                     }
+                    g_pathArray.push(array);
                     break;
                 }
                 case "blocked":{
@@ -241,6 +316,16 @@ var DisplayLayer = cc.Layer.extend({
         }
     },
 
+    //初始化怪物波数;
+    initMonsterWave : function(){
+        for(var i = 0; i < g_monsterWave.length; i++){
+            if((g_monsterWave[i].id + "").indexOf(this._levelData.id) == 0){
+                //cc.log(g_monsterWave[i].id);
+                this._waveManager.addMonsterWave(g_monsterWave[i]);
+            }
+        }
+    },
+
     //游戏主循环
     update : function(dt){
         if(this._pause){
@@ -248,10 +333,6 @@ var DisplayLayer = cc.Layer.extend({
         }
 
        this._gameManager.updateObject(dt);
-
-        if(this._teemo.getTeemoHP() <= 0){
-            this.gameOver(0);
-        }
 
         //刷新造塔和升级按钮;
         if(this._buildTower.isVisible()){
@@ -266,6 +347,26 @@ var DisplayLayer = cc.Layer.extend({
         for(var i = 0; i < objArr.length; i++){
             objArr[i].updateTips(this._gameData.mushroomCount);
         }
+
+        //出怪;
+        this._outMonsterTime += dt;
+        if(this._outMonsterTime >= 1.5){
+            this.createMonster();
+            this._outMonsterTime = 0;
+        }
+
+        //游戏结果;
+        if(this._teemo.getTeemoHP() <= 0){
+            this.gameOver(0);
+            return;
+        }
+        if(this._waveManager.isOutMonsterFinished() === true){
+            if(this._gameManager.getObjArray(MONSTER).length <= 0){
+                //成功了;
+                this.gameOver(1);
+            }
+        }
+
     },
 
     onTouchBegan : function(touch, event){
@@ -355,10 +456,20 @@ var DisplayLayer = cc.Layer.extend({
     },
 
     //创建怪物;
-    createMonster : function(id) {
-        var monster = GameObjectFactory.createGameObject(MONSTER,id);
+    createMonster : function() {//这里需要传入难度值，和路径数组;
+        var data = this._waveManager.getMonsterInfo();
+        if(data == null){
+            return;
+        }
+        var monster = GameObjectFactory.createGameObject(MONSTER,data.monsterId);
+        if(monster == null){
+            return;
+        }
+        this._waveTips.updateLabel(this._waveManager.getCurrentWaveId(), this._waveManager.getWaveCount());
+        monster.setHPRate(data.difficulty);
+        monster.setPathArray(g_pathArray[data.pathnum-1]);
         this._tmxMap.addChild(monster, 10);
-        monster.setPosition(g_pathArray[0]);
+        monster.setPosition(g_pathArray[data.pathnum-1][0]);
         this._gameManager.addGameObject(monster);
 	},
     //创建塔;
@@ -434,7 +545,8 @@ var DisplayLayer = cc.Layer.extend({
         if(this._gameData.mushroomCount < 0){
             this._gameData.mushroomCount = 0;
         }
-        cc.log(this._gameData.mushroomCount);
+        this._mushroomLabel.setString(this._gameData.mushroomCount);
+        this._mushroomLabel.setAnchorPoint(cc.p(0.5, 0.5));
     },
 
     //增加金币;
@@ -456,6 +568,43 @@ var DisplayLayer = cc.Layer.extend({
     getGameManager : function(){
         return this._gameManager;
     },
+    getGameSpeed : function(){
+        return this._gameSpeed;
+    },
+
+    menuCallBack : function(sender){
+        var tag = sender.getTag();
+        switch (tag){
+            case 0:{
+                //暂停，恢复;
+                if(sender.getSelectedIndex() == 0){
+                    //暂停；
+                    this._pause = true;
+                    this._waveTips.setVisible(false);
+                    this._pauseSp.setVisible(true);
+                }else{
+                    this._pause = false;
+                    this._waveTips.setVisible(true);
+                    this._pauseSp.setVisible(false);
+                }
+                break;
+            }
+            case 1:{
+                //1x，2x速;
+                if(sender.getSelectedIndex() == 0){
+                    this._gameSpeed = 1;
+                }else{
+                    this._gameSpeed = 2;
+                }
+                break;
+            }
+            case 2:{
+                //菜单;
+                break;
+            }
+        }
+    },
+
     //游戏结束;
     gameOver : function(type){
         this._pause = true;

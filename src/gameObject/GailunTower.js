@@ -30,29 +30,26 @@ var GailunTower = Tower.extend({
     },
 
     updateObject : function(dt){
-        if(this._target != null){
-            cc.log(this._target.getState());
-            cc.log(this._target.getPosition().x);
-            cc.log(this.getPosition().x);
-        }
         if(this._target == null || this._target.getState() != STATE_ACTIVE
             || cc.pDistance(this._target.getPosition(), this.getPosition()) > this._towerData.atkRange){
             this.getTargetObject();
         }
         //攻击倒计时;
-        this._atkTime -= dt;
+        this._atkTime -= dt*g_disPlayLayer.getGameSpeed();
+        this._animation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed*g_disPlayLayer.getGameSpeed());
+        this._atkAnimation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed*g_disPlayLayer.getGameSpeed());
 
         if(this._atkTime <= 0){
             if(this._target != null){
                 this._atkTime = this._towerData.atkSpeed;
                 this._animation.getAnimation().play("attack");
-                this._animation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed);
+                this._animation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed*g_disPlayLayer.getGameSpeed());
                 this._atkAnimation.setVisible(true);
                 this._atkAnimation.getAnimation().play("show");
-                this._atkAnimation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed);
+                this._atkAnimation.setScale(parseFloat(this._towerData.atkRange)/this._towerBaseData.atkRange);
+                this._atkAnimation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed*g_disPlayLayer.getGameSpeed());
                 //开始攻击;
                 this.attack();
-                //this._target.beHurt(this._towerData.atkPower);
             }else{
                 //没有目标待机;
                 if(this._animation.getAnimation().getCurrentPercent() >= 1){
@@ -81,7 +78,7 @@ var GailunTower = Tower.extend({
             }
         }
 
-        //便利摆件;
+        //遍历摆件;
         objArr = g_disPlayLayer.getGameManager().getObjArray(PART);
         for(var i = 0; i < objArr.length; i++){
             if(cc.pDistance(this.getPosition(), objArr[i].getPosition()) <= this._towerData.atkRange){

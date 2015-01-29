@@ -4,6 +4,7 @@ var Monster = GameObject.extend({
     _monsterData : null,
     _currentHP : 0,
     _currentWayPointIndex: 0,
+    _pathArr : [],
 
     ctor : function(monsterId){
         this._super(MONSTER);
@@ -21,7 +22,7 @@ var Monster = GameObject.extend({
         for(var i = 0; i < count ; i++)
         {
             var data = g_monster[i];
-            if(data.id === this._monsterId){
+            if(data.id == this._monsterId){
                 this._monsterData = data;
                 break;
             }
@@ -59,10 +60,19 @@ var Monster = GameObject.extend({
         this._hpBg.setVisible(false);
     },
 
+    setHPRate : function(value){
+        this._currentHP *= value;
+    },
+
+    setPathArray : function(pathArr){
+        this._pathArr = pathArr;
+    },
+
     updateObject : function(dt){
         if(this._state != STATE_ACTIVE){
             return;
         }
+        this._animation.getAnimation().setSpeedScale(g_disPlayLayer.getGameSpeed());
 
         this.changeWayPoint(dt);
     },
@@ -70,11 +80,11 @@ var Monster = GameObject.extend({
     //移动;
     changeWayPoint: function(dt){
         var pos = this.getPosition();
-        var nextPos = g_pathArray[this._currentWayPointIndex+1];
+        var nextPos = this._pathArr[this._currentWayPointIndex+1];
 
         var way = cc.pSub(nextPos , pos);
         way = cc.pNormalize(way);
-        way = cc.pMult(way, this._monsterData.speed*dt);
+        way = cc.pMult(way, this._monsterData.speed*dt*g_disPlayLayer.getGameSpeed());
         this.setPosition(cc.pAdd(pos , way));
         if(way.x > 0){
         	this._animation.setScaleX(-1);
@@ -83,7 +93,7 @@ var Monster = GameObject.extend({
         }
         if(cc.pDistance(nextPos, this.getPosition()) <= 2){
             this._currentWayPointIndex++;
-            if(this._currentWayPointIndex >= g_pathArray.length-1){
+            if(this._currentWayPointIndex >= this._pathArr.length-1){
                 this._state = STATE_NONE;
                 GameScene.getGameLayer().displaylayer.beHurt(this._monsterData.damage);
             }

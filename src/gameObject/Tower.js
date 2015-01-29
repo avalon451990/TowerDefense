@@ -4,6 +4,7 @@
 var Tower = GameObject.extend({
     _towerId : 0,
     _towerData : null,
+    _towerBaseData : null,//这个是一级塔的数据;
     _atkTime : 0,
     _animation: null,//动画;
     _target : null,//目标;
@@ -17,6 +18,7 @@ var Tower = GameObject.extend({
         if(this.initData() == false){
             cc.assert(false, "there is no tower data!");
         }
+        this._towerBaseData = this._towerData;
         this.setRectSize(1, 1);
         //this._atkTime = this._towerData.atkSpeed;
     },
@@ -48,12 +50,14 @@ var Tower = GameObject.extend({
 
     updateTips : function(mushroom){
         if(this._towerData.level >= 3){
+            this.hideTips();
             return;
         }else{
             var data = getHeroDataById(this._towerId+1);
             if(data != null){
                 if(data.buildCost <= mushroom){
                     this.showTips();
+                    return;
                 }
             }
             this.hideTips();
