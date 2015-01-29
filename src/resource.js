@@ -43,21 +43,21 @@ var res = {
     TmxMap_tmx37 : "res/map/Map_Snowfield_17.tmx",
     TmxMap_tmx38 : "res/map/Map_Snowfield_18.tmx",
     TmxMap_tmx39 : "res/map/Map_Snowfield_19.tmx",
-    TmxMap_tmx40 : "res/map/Map_Snowfield_20.tmx",
+    TmxMap_tmx40 : "res/map/Map_Snowfield_20.tmx"
 
-    Monster_plist : "res/Armature/monster001/monster001.plist",
-    Monster_png : "res/Armature/monster001/monster001.png",
+//    Monster_plist : "res/Armature/monster001/monster001.plist",
+//    Monster_png : "res/Armature/monster001/monster001.png",
+//
+//    World_effect_plist : "res/Armature/world_effect/world_effect.plist",
+//    World_effect_png : "res/Armature/world_effect/world_effect.png",
+//
+//    World_effect01_plist : "res/Armature/world_effect01/world_effect_01.plist",
+//    World_effect01_png : "res/Armature/world_effect01/world_effect_01.png",
+//
+//    Hero_teemo_plist : "res/Armature/hero_timo/hero_timo.plist",
+//    Hero_teemo_png : "res/Armature/hero_timo/hero_timo.png"
 
-    World_effect_plist : "res/Armature/world_effect/world_effect.plist",
-    World_effect_png : "res/Armature/world_effect/world_effect.png",
-
-    World_effect01_plist : "res/Armature/world_effect01/world_effect_01.plist",
-    World_effect01_png : "res/Armature/world_effect01/world_effect_01.png",
-
-    Hero_teemo_plist : "res/Armature/hero_timo/hero_timo.plist",
-    Hero_teemo_png : "res/Armature/hero_timo/hero_timo.png"
-
-    //Effect_png : "res/Armature/effect_001/effect_001.png"
+//      Effect_png : "res/Armature/effect_001/effect_001.png"
 
 };
 

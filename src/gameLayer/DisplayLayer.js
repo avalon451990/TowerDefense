@@ -12,6 +12,7 @@ var DisplayLayer = cc.Layer.extend({
     _mushroomLabel : null,//蘑菇个数标签;
     _waveTips : null,//波数提示;
     _pauseSp : null,//暂停提示;
+    _pauseMenuItem : null,//暂停按钮;
 
     _gameData : {
             mushroomCount : 0,//蘑菇数量;
@@ -34,6 +35,16 @@ var DisplayLayer = cc.Layer.extend({
         //游戏数据;
         this._gameData.mushroomCount = this._levelData.startMushuroom;
         this._gameData.goldCount = this._levelData.goldNum;
+
+        this.scheduleUpdate();
+
+        //触摸代理;
+        var listener = cc.EventListener.create({
+            event : cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches:true,
+            onTouchBegan: this.onTouchBegan.bind(this)
+        });
+        cc.eventManager.addListener(listener, this);
 	},
 	
 	init:function(){
@@ -66,15 +77,6 @@ var DisplayLayer = cc.Layer.extend({
 
         this.initUI();
 
-        this.scheduleUpdate();
-
-        //触摸代理;
-        var listener = cc.EventListener.create({
-            event : cc.EventListener.TOUCH_ONE_BY_ONE,
-            swallowTouches:true,
-            onTouchBegan: this.onTouchBegan.bind(this)
-        });
-        cc.eventManager.addListener(listener, this);
 		return true;
 	},
 
@@ -120,6 +122,7 @@ var DisplayLayer = cc.Layer.extend({
             pauseItem.setTag(0);
             pauseItem.setPosition(cc.p(720, topBar.getContentSize().height/2-5));
             menu.addChild(pauseItem);
+            this._pauseMenuItem = pauseItem;
 
             var speedItem = cc.MenuItemToggle.create(
                 cc.MenuItemSprite.create(cc.Sprite.createWithSpriteFrameName("ui_battle_X1.png"),
@@ -281,39 +284,42 @@ var DisplayLayer = cc.Layer.extend({
     //初始化地图数组;
     initMapArr : function(){
         //一部分已经初始化完毕，还要去掉路径;
-        for(var i = 0; i < g_pathArray.length-1; i++){
-            var pos1 = g_pathArray[i];
-            var pos2 = g_pathArray[i+1];
-            var indexX = getTouchIndex_X(pos1.x);
-            var indexY = getTouchIndex_Y(pos1.y);
-            var disX = getTouchIndex_X(pos2.x)-indexX;
-            var disY = getTouchIndex_Y(pos2.y)-indexY;
-            if(disX >= 0){
-                for(var m = 0; m <= disX; m++){
-                    if(disY >= 0){
-                        for(var n = 0; n <= disY; n++){
-                            this._mapArray[indexX+m][indexY+n] = -1;
-                        }
-                    }else{
-                        for(var n = 0; n >= disY; n--){
-                            this._mapArray[indexX+m][indexY+n] = -1;
+        for(var j = 0; j < g_pathArray.length; j++){
+            for(var i = 0; i < g_pathArray[j].length-1; i++){
+                var pos1 = g_pathArray[j][i];
+                var pos2 = g_pathArray[j][i+1];
+                var indexX = getTouchIndex_X(pos1.x);
+                var indexY = getTouchIndex_Y(pos1.y);
+                var disX = getTouchIndex_X(pos2.x)-indexX;
+                var disY = getTouchIndex_Y(pos2.y)-indexY;
+                if(disX >= 0){
+                    for(var m = 0; m <= disX; m++){
+                        if(disY >= 0){
+                            for(var n = 0; n <= disY; n++){
+                                this._mapArray[indexX+m][indexY+n] = -1;
+                            }
+                        }else{
+                            for(var n = 0; n >= disY; n--){
+                                this._mapArray[indexX+m][indexY+n] = -1;
+                            }
                         }
                     }
-                }
-            }else{
-                for(var m = 0; m >= disX; m--){
-                    if(disY >= 0){
-                        for(var n = 0; n <= disY; n++){
-                            this._mapArray[indexX+m][indexY+n] = -1;
-                        }
-                    }else{
-                        for(var n = 0; n >= disY; n--){
-                            this._mapArray[indexX+m][indexY+n] = -1;
+                }else{
+                    for(var m = 0; m >= disX; m--){
+                        if(disY >= 0){
+                            for(var n = 0; n <= disY; n++){
+                                this._mapArray[indexX+m][indexY+n] = -1;
+                            }
+                        }else{
+                            for(var n = 0; n >= disY; n--){
+                                this._mapArray[indexX+m][indexY+n] = -1;
+                            }
                         }
                     }
                 }
             }
         }
+
     },
 
     //初始化怪物波数;
@@ -374,7 +380,7 @@ var DisplayLayer = cc.Layer.extend({
         localTouch = cc.p(parseInt(localTouch.x), parseInt(localTouch.y));
         var mapSize = this._tmxMap.getMapSize();
         if(cc.rectContainsPoint(cc.rect(0, MAP_GRID_HEIGHT, mapSize.width*MAP_GRID_WIDTH, (mapSize.height-2)*MAP_GRID_HEIGHT),localTouch) == false){
-            return true;
+            return false;
         }
 
         if(this._buildTower.isVisible()){
@@ -599,7 +605,34 @@ var DisplayLayer = cc.Layer.extend({
                 break;
             }
             case 2:{
+                this._pauseMenuItem.setSelectedIndex(0);
+                this._pause = true;
+                this._waveTips.setVisible(false);
+                this._pauseSp.setVisible(true);
                 //菜单;
+                var mainDialog = new MainMenuDialog();
+                mainDialog.initWithCallBack(this, this.mainMenuCallBack);
+                mainDialog.setPosition(cc.p(cc.winSize.width/2, cc.winSize.height/2));
+                this.addChild(mainDialog, 100);
+                break;
+            }
+        }
+    },
+    mainMenuCallBack : function(sender){
+        var tag = sender.getTag();
+        switch (tag){
+            case 0:{//继续;
+                this._pauseMenuItem.setSelectedIndex(1);
+                this._pause = false;
+                this._waveTips.setVisible(true);
+                this._pauseSp.setVisible(false);
+                break;
+            }
+            case 1:{//重新开始;
+
+                break;
+            }
+            case 2:{//返回;
                 break;
             }
         }

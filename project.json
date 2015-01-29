@@ -17,6 +17,8 @@
         "src/custom/UpSellTower.js",
         "src/custom/WaveManager.js",
         "src/custom/WaveTips.js",
+        "src/custom/MyLayer.js",
+        "src/custom/MainMenuDialog.js",
 
         "src/gameLayer/BackGroundLayer.js",
         "src/gameLayer/DisplayLayer.js",

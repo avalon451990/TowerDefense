@@ -1,3 +1,4 @@
+//对象的选取还是用矩形来判断，攻击范围这种用内切圆来做
 
 var GameObject = cc.Node.extend({
     _type : NONE_TYPE,
@@ -5,6 +6,7 @@ var GameObject = cc.Node.extend({
     _rect : cc.RectZero,
     _width : 1,
     _height : 1,
+    _radius : 0,
 
     ctor : function(type){
         this._super();
@@ -62,10 +64,18 @@ var GameObject = cc.Node.extend({
     setRectSize : function(wid, hei){
         this._width = wid;
         this._height = hei;
+        if(wid > 1 && hei > 1){
+            this._radius = 40;
+        }else{
+            this._radius = 20;
+        }
         this._rect = cc.rect(
             -wid*MAP_GRID_WIDTH/2, -hei*MAP_GRID_HEIGHT/2,
                 wid*MAP_GRID_WIDTH, hei*MAP_GRID_HEIGHT
         );
+    },
+    getRadius : function(){
+      return this._radius;
     },
 
     getObjectHeight : function(){

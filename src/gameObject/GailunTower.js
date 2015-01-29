@@ -31,7 +31,7 @@ var GailunTower = Tower.extend({
 
     updateObject : function(dt){
         if(this._target == null || this._target.getState() != STATE_ACTIVE
-            || cc.pDistance(this._target.getPosition(), this.getPosition()) > this._towerData.atkRange){
+            || cc.pDistance(this._target.getPosition(), this.getPosition()) > this._towerData.atkRange+this._target.getRadius()){
             this.getTargetObject();
         }
         //攻击倒计时;
@@ -73,7 +73,7 @@ var GailunTower = Tower.extend({
         var objArr = g_disPlayLayer.getGameManager().getObjArray(MONSTER);
         //遍历怪物;
         for(var i = 0; i < objArr.length; i++){
-            if(cc.pDistance(this.getPosition(), objArr[i].getPosition()) <= this._towerData.atkRange){
+            if(cc.pDistance(this.getPosition(), objArr[i].getPosition()) <= this._towerData.atkRange+this._target.getRadius()){
                 objArr[i].beHurt(this._towerData.atkPower);
             }
         }
@@ -81,7 +81,7 @@ var GailunTower = Tower.extend({
         //遍历摆件;
         objArr = g_disPlayLayer.getGameManager().getObjArray(PART);
         for(var i = 0; i < objArr.length; i++){
-            if(cc.pDistance(this.getPosition(), objArr[i].getPosition()) <= this._towerData.atkRange){
+            if(cc.pDistance(this.getPosition(), objArr[i].getPosition()) <= this._towerData.atkRange+this._target.getRadius()){
                 objArr[i].beHurt(this._towerData.atkPower);
             }
         }

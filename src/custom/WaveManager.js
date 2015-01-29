@@ -66,7 +66,6 @@ var WaveManager = cc.Class.extend({
                     //切换波数;
                     this._waveIndex++;
                     if(this._waveIndex >= this._waveData.length){
-                        this._waveIndex = 0;
                         //所有怪物已出完;
                         this._outFinished = true;
                     }

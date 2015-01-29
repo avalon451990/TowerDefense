@@ -3,6 +3,7 @@ var Monster = GameObject.extend({
     _monsterId : 0,
     _monsterData : null,
     _currentHP : 0,
+    _maxHp : 0,
     _currentWayPointIndex: 0,
     _pathArr : [],
 
@@ -15,6 +16,7 @@ var Monster = GameObject.extend({
             cc.assert(false, "there is no monster data!");
         }
         this.initSp();
+        this.setRectSize(1, 1);
     },
 
     initData: function(){
@@ -62,6 +64,7 @@ var Monster = GameObject.extend({
 
     setHPRate : function(value){
         this._currentHP *= value;
+        this._maxHp = this._currentHP;
     },
 
     setPathArray : function(pathArr){
@@ -107,7 +110,7 @@ var Monster = GameObject.extend({
             this.unschedule(this.hideHPBar);
             this.schedule(this.hideHPBar, 0, null, 5.0);
             this._hpBg.setVisible(true);
-            this._hpBar.setPercentage(this._currentHP*100/this._monsterData.hp);
+            this._hpBar.setPercentage(this._currentHP*100/this._maxHp);
             if(this._currentHP <= 0){
                 this._currentHP = 0;
                 this._state = STATE_NONE;

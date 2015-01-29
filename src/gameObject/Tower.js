@@ -23,6 +23,7 @@ var Tower = GameObject.extend({
         //this._atkTime = this._towerData.atkSpeed;
     },
     initData: function(){
+        this._towerData = null;
         var count = g_heroData.length;
         for(var i = 0; i < count ; i++)
         {
@@ -32,7 +33,7 @@ var Tower = GameObject.extend({
                 break;
             }
         }
-        if(this._towerData){
+        if(this._towerData != null){
             return true;
         }else{
             return false;
@@ -41,7 +42,9 @@ var Tower = GameObject.extend({
 
     upGrade : function(){
         this._towerId += 1;
-        this.initData();
+        if(this.initData() == false){
+            cc.assert(false, "upgrade fail");
+        }
     },
 
     updateObject : function(dt){
@@ -74,7 +77,7 @@ var Tower = GameObject.extend({
         var objArr = g_disPlayLayer.getGameManager().getObjArray(MONSTER);
         for(var i = 0; i < objArr.length; i++){
             if(objArr[i].getState() === STATE_ACTIVE){
-                if(cc.pDistance(objArr[i].getPosition(), this.getPosition()) <= this._towerData.atkRange){
+                if(cc.pDistance(objArr[i].getPosition(), this.getPosition()) <= this._towerData.atkRange+objArr[i].getRadius()){
                     this._target = objArr[i];
                     return;
                 }

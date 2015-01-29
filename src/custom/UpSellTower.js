@@ -20,12 +20,17 @@ var UpSellTower = cc.Node.extend({
 
         this._menu = cc.Menu.create();
         this._menu.setPosition(cc.p(0, 0));
-        this.addChild(this._menu);
+        this.addChild(this._menu, 1);
 
         //动画;
         var fadein = cc.FadeIn.create(1);
         var fadeout = cc.FadeOut.create(1);
         grid.runAction(cc.RepeatForever(cc.Sequence(fadein, fadeout)));
+
+        //攻击范围标示;
+        this._atkRangeSp = cc.Sprite.createWithSpriteFrameName("ui_build_atackrange.png");
+        this.addChild(this._atkRangeSp);
+
         this.initBtn();
     },
     initBtn : function(){
@@ -124,6 +129,7 @@ var UpSellTower = cc.Node.extend({
 
         //刷新按钮价格;
         this._priceLabel[1].setString(tower.getTowerData().sellPrice);
+        this._atkRangeSp.setScale(tower.getTowerData().atkRange*2/this._atkRangeSp.getContentSize().width);
         if(tower.getTowerData().level >= 3){
             //满级了;
             this._menuItem[0].setVisible(false);

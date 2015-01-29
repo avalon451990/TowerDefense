@@ -14,6 +14,7 @@ var PartObject = GameObject.extend({
             cc.assert(false, "there is no part data!");
         }
         this.initSp();
+        this.setRectSize(1, 1);
     },
 
     initData: function(){
