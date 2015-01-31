@@ -36,6 +36,9 @@
         "src/gameObject/PartObject.js",
         "src/gameObject/Teemo.js",
         "src/gameObject/Tower.js",
-        "src/gameObject/GailunTower.js"
+        "src/gameObject/GailunTower.js",
+        "src/gameObject/FixedTower.js",
+        "src/gameObject/Bullet.js",
+        "src/gameObject/TrackBullet.js"
     ]
 }

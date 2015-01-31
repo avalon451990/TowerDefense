@@ -13,16 +13,31 @@ GameObjectFactory._createMonster = function(id){
 };
 //创建塔;
 GameObjectFactory._createTower = function(id){
-    switch ((id-40011)/10){
-        case 0:{
+    switch (parseInt(id)){
+        case 40011:{
             return new GailunTower(40011);
             break;
+        }
+        case 41001:{
+            return new FixedTower(41001);
+            break;
+        }
+        default :{
+            return null;
         }
     }
 };
 //创建子弹;
 GameObjectFactory._createBullet = function(id){
-
+    switch (parseInt(id)){
+        case 530001:{
+            return new TrackBullet(530001);
+            break;
+        }
+        default :{
+            return null;
+        }
+    }
 };
 //创建摆件;
 GameObjectFactory._createPart = function(id){
@@ -49,6 +64,7 @@ GameObjectFactory.createGameObject = function(type, id){
         }
         default :{
             cc.assert(false, "wrong type!");
+            return null;
         }
     }
 };

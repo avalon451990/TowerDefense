@@ -225,6 +225,20 @@ var DisplayLayer = cc.Layer.extend({
                         var posX = towerArr[j]["x"];
                         var posY = towerArr[j]["y"];
                         //创建塔;
+                        var tower = GameObjectFactory.createGameObject(TOWER, objArr.getProperties()["id"]);
+                        if(tower == null){
+                            continue;
+                        }
+                        tower.setRectSize(wid, hei);
+                        this._gameManager.addGameObject(tower);
+                        this._tmxMap.addChild(tower);
+                        posX = parseInt(posX/MAP_GRID_WIDTH) * MAP_GRID_WIDTH + MAP_GRID_WIDTH/2*objArr.getProperties()["sizeW"];
+                        if(objArr.getProperties()["sizeH"] == 1){
+                            posY = parseInt(posY/MAP_GRID_HEIGHT) * MAP_GRID_HEIGHT + MAP_GRID_HEIGHT/2;
+                        }else{
+                            posY = parseInt(posY/MAP_GRID_HEIGHT) * MAP_GRID_HEIGHT;
+                        }
+                        tower.setPosition(cc.p(posX, posY));
 
                         //修改地图;
                         var indexX = getTouchIndex_X(towerArr[j]["x"]);
@@ -425,8 +439,7 @@ var DisplayLayer = cc.Layer.extend({
             var type = gameObject.getType();
             switch (type){
                 case TOWER:{
-                    this._upSellTower.setPosition(cc.p(index_X*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2,
-                            index_Y*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
+                    this._upSellTower.setPosition(cc.p(gameObject.getPositionX(), gameObject.getPositionY()));
                     this._upSellTower.showUpSellBtn(cc.p(index_X, index_Y), gameObject);
                     break;
                 }
@@ -481,6 +494,9 @@ var DisplayLayer = cc.Layer.extend({
     //创建塔;
     createTower : function(posX, posY, id){
         var tower = GameObjectFactory.createGameObject(TOWER,id);
+        if(tower == null){
+            return;
+        }
         this._tmxMap.addChild(tower, 20);
         tower.setPosition(cc.p(posX*MAP_GRID_WIDTH+MAP_GRID_WIDTH/2, posY*MAP_GRID_HEIGHT+MAP_GRID_HEIGHT/2));
         this._gameManager.addGameObject(tower);

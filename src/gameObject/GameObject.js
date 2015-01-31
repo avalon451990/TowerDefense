@@ -21,13 +21,15 @@ var GameObject = cc.Node.extend({
             this._tipsAnimation = new ccs.Armature("jiantou_lvup");
             this._tipsAnimation.getAnimation().play("show");
             this.addChild(this._tipsAnimation, 10);
-        }else{
+            this.hideTips();
+        }else if(this._type == MONSTER || this._type == PART){
             ccs.armatureDataManager.addArmatureFileInfo("res/Armature/world_effect/jiantou_target.csb");
             this._tipsAnimation = new ccs.Armature("jiantou_target");
             this._tipsAnimation.getAnimation().play("show");
             this.addChild(this._tipsAnimation, 10);
+            this.hideTips();
         }
-        this.hideTips();
+
     },
 
     showTips : function(){
