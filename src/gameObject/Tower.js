@@ -45,6 +45,21 @@ var Tower = GameObject.extend({
         if(this.initData() == false){
             cc.assert(false, "upgrade fail");
         }
+
+        //升级特效;
+        var url = "res/Armature/world_effect/levelup.csb";
+        //cc.log(url);
+        ccs.armatureDataManager.addArmatureFileInfo(url);
+        var animation = new ccs.Armature("levelup");
+        animation.getAnimation().play("show");
+        this.addChild(animation, 1);
+        animation.setMovementEventCallFunc(function(bone, frameEventName, originFrameIndex, currentFrameIndex){
+            animation.removeFromParent();
+        }, this);
+    },
+
+    levelUpEffectCall : function(){
+
     },
 
     updateObject : function(dt){

@@ -5,6 +5,7 @@ var Bullet = GameObject.extend({
     _animation: null,//动画;
     _target : null,//目标;
     _damage : 0,
+    _attacked : false,//攻击了，这个变量是为了播放子弹的第二段动画;
 
     ctor : function(id){
         this._super(BULLET);
@@ -15,6 +16,7 @@ var Bullet = GameObject.extend({
             cc.assert(false, "there is no bullet data!");
         }
 
+        this._attacked = false;
         this._radius = 10;//碰撞半径;
     },
 

@@ -33,6 +33,10 @@ var Teemo = cc.Node.extend({
             this._currentHP = 0;
         }
         this._hpLabel.setString(this._currentHP);
+        //创建漂浮字;
+        var tips = new DropTips(DROP_TYPE_HURT, damage);
+        this.getParent().addChild(tips, MAP_GRID_HEIGHT*MAP_HEIGHT);
+        tips.setPosition(cc.pAdd(this.getPosition() , cc.p(0, 30)));
     },
 
     getTeemoHP : function(){

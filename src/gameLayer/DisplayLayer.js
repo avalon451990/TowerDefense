@@ -24,7 +24,7 @@ var DisplayLayer = cc.Layer.extend({
         g_disPlayLayer = this;
 
         //造塔控件;
-        this._buildTower = new BuildTower(40011, 40021, 40031, 40041, 40051, 40061);
+        this._buildTower = new BuildTower(40011, 40021, 40031, 40041, 40051, 40081);
         this._tmxMap.addChild(this._buildTower, MAP_GRID_HEIGHT*MAP_HEIGHT+1);
         this._buildTower.setVisible(false);
         this._buildTower.initWithTarget(this, this.buildTowerCallBack);
@@ -122,6 +122,7 @@ var DisplayLayer = cc.Layer.extend({
             pauseItem.setTag(0);
             pauseItem.setPosition(cc.p(720, topBar.getContentSize().height/2-5));
             menu.addChild(pauseItem);
+            pauseItem.setSelectedIndex(1);
             this._pauseMenuItem = pauseItem;
 
             var speedItem = cc.MenuItemToggle.create(
@@ -369,7 +370,7 @@ var DisplayLayer = cc.Layer.extend({
         }
 
         //出怪;
-        this._outMonsterTime += dt;
+        this._outMonsterTime += dt*this._gameSpeed;
         if(this._outMonsterTime >= 1.5){
             this.createMonster();
             this._outMonsterTime = 0;
@@ -616,7 +617,7 @@ var DisplayLayer = cc.Layer.extend({
                 if(sender.getSelectedIndex() == 0){
                     this._gameSpeed = 1;
                 }else{
-                    this._gameSpeed = 2;
+                    this._gameSpeed = 1.5;
                 }
                 break;
             }
@@ -645,7 +646,7 @@ var DisplayLayer = cc.Layer.extend({
                 break;
             }
             case 1:{//重新开始;
-
+                cc.director.runScene(GameLoading.scene());
                 break;
             }
             case 2:{//返回;
@@ -659,8 +660,16 @@ var DisplayLayer = cc.Layer.extend({
         this._pause = true;
         if(type == 0){
             //游戏失败;
+            var towerArr = this._gameManager.getObjArray(TOWER);
+            for(var i = 0; i < towerArr.length; i++){
+                towerArr[i].showLoseAction();
+            }
         }else{
             //游戏成功;
+            var towerArr = this._gameManager.getObjArray(TOWER);
+            for(var i = 0; i < towerArr.length; i++){
+                towerArr[i].showWinAction();
+            }
         }
     }
 });

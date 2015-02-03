@@ -2,10 +2,11 @@
 var Monster = GameObject.extend({
     _monsterId : 0,
     _monsterData : null,
-    _currentHP : 0,
-    _maxHp : 0,
+    _currentHP : 0.0,
+    _maxHp : 0.0,
     _currentWayPointIndex: 0,
     _pathArr : [],
+    _speedRate : 1,//速度的权值;
 
     ctor : function(monsterId){
         this._super(MONSTER);
@@ -30,7 +31,7 @@ var Monster = GameObject.extend({
             }
         }
         if(this._monsterData){
-            this._currentHP = this._monsterData.hp;
+            this._currentHP = parseFloat(this._monsterData.hp);
             return true;
         }else{
             return false;
@@ -87,7 +88,7 @@ var Monster = GameObject.extend({
 
         var way = cc.pSub(nextPos , pos);
         way = cc.pNormalize(way);
-        way = cc.pMult(way, this._monsterData.speed*dt*g_disPlayLayer.getGameSpeed());
+        way = cc.pMult(way, this._monsterData.speed*dt*g_disPlayLayer.getGameSpeed()*this._speedRate);
         this.setPosition(cc.pAdd(pos , way));
         if(way.x > 0){
         	this._animation.setScaleX(-1);
@@ -106,7 +107,7 @@ var Monster = GameObject.extend({
     //收到攻击;
     beHurt : function(damage){
         if(this._state === STATE_ACTIVE){
-            this._currentHP -= damage;
+            this._currentHP -= parseFloat(damage);
             this.unschedule(this.hideHPBar);
             this.schedule(this.hideHPBar, 0, null, 5.0);
             this._hpBg.setVisible(true);
@@ -116,11 +117,26 @@ var Monster = GameObject.extend({
                 this._state = STATE_NONE;
                 GameScene.getGameLayer().displaylayer.addMushroom(this._monsterData.mushroom);
                 GameScene.getGameLayer().displaylayer.addGold(this._monsterData.gold);
+
+                //创建漂浮字;
+                var tips = new DropTips(DROP_TYPE_RES, this._monsterData.mushroom);
+                this.getParent().addChild(tips, MAP_GRID_HEIGHT*MAP_HEIGHT);
+                tips.setPosition(cc.pAdd(this.getPosition() , cc.p(0, 30)));
             }
         }
     },
 
     hideHPBar : function(dt){
         this._hpBg.setVisible(false);
+    },
+
+    setSpeedRate : function(value, force){//是否强制设置;
+        if(this._speedRate > value){
+            this._speedRate = value;
+        }
+        if(force === true){
+            this._speedRate = value;
+        }
+
     }
 });

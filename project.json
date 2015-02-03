@@ -19,12 +19,17 @@
         "src/custom/WaveTips.js",
         "src/custom/MyLayer.js",
         "src/custom/MainMenuDialog.js",
+        "src/custom/DropTips.js",
 
         "src/gameLayer/BackGroundLayer.js",
         "src/gameLayer/DisplayLayer.js",
         "src/gameLayer/UiLayer.js",
 
         "src/scene/GameScene.js",
+        "src/scene/GameLoading.js",
+        "src/scene/StartLoading.js",
+        "src/scene/MainScene.js",
+        "src/scene/LevelScene.js",
 
         "src/tools/GameDataManager.js",
         "src/tools/Constant.js",
@@ -39,6 +44,15 @@
         "src/gameObject/GailunTower.js",
         "src/gameObject/FixedTower.js",
         "src/gameObject/Bullet.js",
-        "src/gameObject/TrackBullet.js"
+        "src/gameObject/TrackBullet.js",
+        "src/gameObject/LuckyLadyTower.js",
+        "src/gameObject/JinxTower.js",
+        "src/gameObject/LakesTower.js",
+        "src/gameObject/AnniTower.js",
+        "src/gameObject/NunuTower.js",
+        "src/gameObject/Buff.js",
+        "src/gameObject/AixiTower.js",
+        "src/gameObject/SuolakaTower.js",
+        "src/gameObject/MeteorBullet.js"
     ]
 }

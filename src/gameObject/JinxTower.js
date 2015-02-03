@@ -1,5 +1,5 @@
 
-var FixedTower = Tower.extend({
+var JinxTower = Tower.extend({
 
     ctor : function(id){
         this._super(id);
@@ -9,8 +9,9 @@ var FixedTower = Tower.extend({
 
     initSp : function(){
         var url = "res/Armature/" + this._towerData.resource + "/" + this._towerData.resource + ".csb";
-        //cc.log(url);
+        cc.log(url);
         ccs.armatureDataManager.addArmatureFileInfo(url);
+        cc.log(url);
         this._animation = new ccs.Armature(this._towerData.resource);
         this._animation.getAnimation().play("show");
         this.addChild(this._animation);
@@ -55,7 +56,17 @@ var FixedTower = Tower.extend({
         }
         bullet.setTarget(this._target);
         bullet.setDamage(this._towerData.atkPower);
-        bullet.setPosition(cc.pAdd(this.getPosition(), cc.p(0,56)));
+        bullet.setPosition(cc.pAdd(this.getPosition(), cc.p(7,0)));
+        this.getParent().addChild(bullet, this.getLocalZOrder());
+        g_disPlayLayer.getGameManager().addGameObject(bullet);
+        //第二个子弹;
+        bullet = GameObjectFactory.createGameObject(BULLET, this._towerData.normalAtk);
+        if(bullet == null){
+            return;
+        }
+        bullet.setTarget(this._target);
+        bullet.setDamage(this._towerData.atkPower);
+        bullet.setPosition(cc.pAdd(this.getPosition(), cc.p(-7,0)));
         this.getParent().addChild(bullet, this.getLocalZOrder());
         g_disPlayLayer.getGameManager().addGameObject(bullet);
     }

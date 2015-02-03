@@ -2,7 +2,7 @@
 var PartObject = GameObject.extend({
     _partId : null,
     _partData : null,
-    _currentHP : null,
+    _currentHP : 0.0,
 
     ctor : function(partId){
         this._super(PART);
@@ -28,7 +28,7 @@ var PartObject = GameObject.extend({
             }
         }
         if(this._partData){
-            this._currentHP = this._partData.hp;
+            this._currentHP = parseFloat(this._partData.hp);
             return true;
         }else{
             return false;
@@ -67,15 +67,20 @@ var PartObject = GameObject.extend({
     },
 
     beHurt : function(damage){
-        this._currentHP -= damage;
+        this._currentHP -= parseFloat(damage);
         this.unschedule(this.hideHPBar);
         this.schedule(this.hideHPBar, 0, null, 5.0);
         this._hpBg.setVisible(true);
-        this._hpBar.setPercentage(this._currentHP*100/this._partData.hp);
+        this._hpBar.setPercentage(this._currentHP*100.0/this._partData.hp);
         if(this._currentHP <= 0){
             this._state = STATE_NONE;
             g_disPlayLayer.addMushroom(this._partData.mushroom);
             g_disPlayLayer.addGold(this._partData.gold);
+
+            //创建漂浮字;
+            var tips = new DropTips(DROP_TYPE_RES, this._partData.mushroom);
+            this.getParent().addChild(tips, MAP_GRID_HEIGHT*MAP_HEIGHT);
+            tips.setPosition(cc.pAdd(this.getPosition() , cc.p(0, 30)));
         }
     },
     hideHPBar : function(dt){

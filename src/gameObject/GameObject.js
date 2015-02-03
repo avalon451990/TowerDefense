@@ -7,6 +7,7 @@ var GameObject = cc.Node.extend({
     _width : 1,
     _height : 1,
     _radius : 0,
+    _tipsAnimation : null,
 
     ctor : function(type){
         this._super();
@@ -33,12 +34,18 @@ var GameObject = cc.Node.extend({
     },
 
     showTips : function(){
-        this._tipsAnimation.setVisible(true);
-        this._tipsAnimation.setPositionY(this.getObjectHeight()*MAP_GRID_HEIGHT/2);
+        if(this._tipsAnimation != null){
+            this._tipsAnimation.setVisible(true);
+            this._tipsAnimation.setPositionY(this.getObjectHeight()*MAP_GRID_HEIGHT/2);
+        }
+
     },
 
     hideTips : function(){
-        this._tipsAnimation.setVisible(false);
+        if(this._tipsAnimation != null){
+            this._tipsAnimation.setVisible(false);
+        }
+
     },
     isTipsShowing : function(){
         return this._tipsAnimation.isVisible();

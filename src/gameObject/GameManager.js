@@ -5,6 +5,7 @@ GameManager = cc.Class.extend({
     _towerArr : [],     //塔
     _bulletArr : [],    //子弹
     _partArr : [],      //摆件
+    _buffArr : [],      //buff;
 
     _addArr : [],//添加数组
     _deadArr : [],//移除数组
@@ -36,6 +37,10 @@ GameManager = cc.Class.extend({
                 return this._partArr;
                 break;
             }
+            case BUFF:{
+                return this._buffArr;
+                break;
+            }
             default :{
                 return [];
             }
@@ -65,6 +70,10 @@ GameManager = cc.Class.extend({
                         this._partArr.push(obj);
                         break;
                     }
+                    case BUFF:{
+                        this._buffArr.push(obj);
+                        break;
+                    }
                 }
             }
             this._addArr = [];
@@ -79,6 +88,16 @@ GameManager = cc.Class.extend({
             }
             if(this._monsterArr[i].getState() === STATE_NONE){
                 this._monsterArr[i].setState(STATE_DEAD);
+            }
+        }
+
+        for(var i = 0; i < this._buffArr.length; i++){
+            this._buffArr[i].updateObject(dt);
+            if(this._buffArr[i].getState() === STATE_DEAD){
+                this.removeGameObject(this._buffArr[i]);
+            }
+            if(this._buffArr[i].getState() === STATE_NONE){
+                this._buffArr[i].setState(STATE_DEAD);
             }
         }
 
@@ -135,6 +154,10 @@ GameManager = cc.Class.extend({
                     }
                     case PART:{
                         this._partArr = this._partArr.deleteObject(obj);
+                        break;
+                    }
+                    case BUFF:{
+                        this._buffArr = this._buffArr.deleteObject(obj);
                         break;
                     }
                 }

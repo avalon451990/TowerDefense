@@ -1,6 +1,5 @@
 
-var FixedTower = Tower.extend({
-
+var AixiTower = Tower.extend({
     ctor : function(id){
         this._super(id);
 
@@ -48,15 +47,39 @@ var FixedTower = Tower.extend({
     },
 
     attack : function(){
-        //创建子弹;
-        var bullet = GameObjectFactory.createGameObject(BULLET, this._towerData.normalAtk);
-        if(bullet == null){
-            return;
+        var type = this._target.getType();
+        var targetArr = [];
+        if(type == PART){
+            targetArr.push(this._target);
+        }else if(type == MONSTER){
+            //搜索三个目标;
+            var objArr = g_disPlayLayer.getGameManager().getObjArray(MONSTER);
+            for(var i = 0; i < objArr.length; i++){
+                if(objArr[i].getState() === STATE_ACTIVE){
+                    if(cc.pDistance(objArr[i].getPosition(), this.getPosition()) <= this._towerData.atkRange+objArr[i].getRadius()){
+                        targetArr.push(objArr[i]);
+                        if(targetArr.length >= 3){
+                            break;
+                        }
+                    }
+                }
+            }
         }
-        bullet.setTarget(this._target);
-        bullet.setDamage(this._towerData.atkPower);
-        bullet.setPosition(cc.pAdd(this.getPosition(), cc.p(0,56)));
-        this.getParent().addChild(bullet, this.getLocalZOrder());
-        g_disPlayLayer.getGameManager().addGameObject(bullet);
+
+        for(var i = 0; i < targetArr.length; i++){
+            //创建子弹;
+            var bullet = GameObjectFactory.createGameObject(BULLET, this._towerData.normalAtk);
+            if(bullet == null){
+                return;
+            }
+            bullet.setTarget(targetArr[i]);
+            bullet.setDamage(this._towerData.atkPower);
+            bullet.setPosition(cc.pAdd(this.getPosition(), cc.p(0,0)));
+            this.getParent().addChild(bullet, this.getLocalZOrder());
+            g_disPlayLayer.getGameManager().addGameObject(bullet);
+        }
+        targetArr = [];//删除数组;
+
+
     }
 });

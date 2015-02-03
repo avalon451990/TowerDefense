@@ -1,5 +1,5 @@
 
-var FixedTower = Tower.extend({
+var AnniTower = Tower.extend({
 
     ctor : function(id){
         this._super(id);
@@ -55,7 +55,7 @@ var FixedTower = Tower.extend({
         }
         bullet.setTarget(this._target);
         bullet.setDamage(this._towerData.atkPower);
-        bullet.setPosition(cc.pAdd(this.getPosition(), cc.p(0,56)));
+        bullet.setPosition(cc.pAdd(this.getPosition(), cc.p(0,0)));
         this.getParent().addChild(bullet, this.getLocalZOrder());
         g_disPlayLayer.getGameManager().addGameObject(bullet);
     }
