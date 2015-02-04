@@ -53,7 +53,7 @@ var Tower = GameObject.extend({
         var animation = new ccs.Armature("levelup");
         animation.getAnimation().play("show");
         this.addChild(animation, 1);
-        animation.setMovementEventCallFunc(function(bone, frameEventName, originFrameIndex, currentFrameIndex){
+        animation.getAnimation().setMovementEventCallFunc(function(bone, frameEventName, originFrameIndex, currentFrameIndex){
             animation.removeFromParent();
         }, this);
     },
@@ -106,10 +106,15 @@ var Tower = GameObject.extend({
     },
 
     showWinAction : function(){
-        this._animation.getAnimation().play("win");
+        if(this._towerId != 41001 && this._towerId != 41002 && this._towerId != 41003){
+            this._animation.getAnimation().play("win");
+        }
+
     },
     showLoseAction : function(){
-        this._animation.getAnimation().play("lose");
+        if(this._towerId != 41001 && this._towerId != 41002 && this._towerId != 41003) {
+            this._animation.getAnimation().play("lose");
+        }
     }
 
 

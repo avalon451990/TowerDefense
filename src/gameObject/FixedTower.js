@@ -12,7 +12,7 @@ var FixedTower = Tower.extend({
         //cc.log(url);
         ccs.armatureDataManager.addArmatureFileInfo(url);
         this._animation = new ccs.Armature(this._towerData.resource);
-        this._animation.getAnimation().play("show");
+        this._animation.getAnimation().playWithIndex(0);
         this.addChild(this._animation);
     },
 
@@ -28,20 +28,20 @@ var FixedTower = Tower.extend({
         if(this._atkTime <= 0){
             if(this._target != null){
                 this._atkTime = this._towerData.atkSpeed;
-                this._animation.getAnimation().play("attack");
+                this._animation.getAnimation().playWithIndex(0);
                 this._animation.getAnimation().setSpeedScale(1.0/this._towerData.atkSpeed*g_disPlayLayer.getGameSpeed());
                 //开始攻击;
                 this.attack();
             }else{
                 //没有目标待机;
                 if(this._animation.getAnimation().getCurrentPercent() >= 1){
-                    this._animation.getAnimation().play("show");
+                    this._animation.getAnimation().playWithIndex(1);
                 }
             }
         }else{
             //攻击间隔没到;
             if(this._animation.getAnimation().getCurrentPercent() >= 1){
-                this._animation.getAnimation().play("show");
+                this._animation.getAnimation().playWithIndex(1);
             }
         }
 

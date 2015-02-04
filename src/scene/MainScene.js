@@ -8,11 +8,19 @@ var MainScene = cc.Layer.extend({
         this.addChild(sp);
         sp.setPosition(cc.p(cc.winSize.width/2, cc.winSize.height/2));
 
-
+        //开始按钮;
+        var mainItem = cc.MenuItemSprite.create(
+            new cc.Sprite("#8M_Button_Startgame.png"),
+            new cc.Sprite("#8M_Button_Startgame.png"),
+            this.menuCallBack, this);
+        mainItem.setPosition(cc.p(cc.winSize.width/2, 100));
+        var menu = cc.Menu.create(mainItem);
+        menu.setPosition(cc.p(0, 0));
+        this.addChild(menu, 1);
     },
 
     menuCallBack : function(sender){
-        cc.director.runScene(LevelScene.scene());
+        cc.director.runScene(ThemeScene.scene());
     }
 });
 

@@ -48,7 +48,9 @@ var GameObject = cc.Node.extend({
 
     },
     isTipsShowing : function(){
-        return this._tipsAnimation.isVisible();
+        if(this._tipsAnimation != null) {
+            return this._tipsAnimation.isVisible();
+        }
     },
 
     updateObject : function(dt){

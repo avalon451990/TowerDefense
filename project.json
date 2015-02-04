@@ -29,7 +29,9 @@
         "src/scene/GameLoading.js",
         "src/scene/StartLoading.js",
         "src/scene/MainScene.js",
-        "src/scene/LevelScene.js",
+        "src/scene/ThemeScene.js",
+        "src/scene/ThemeLayer.js",
+        "src/scene/LevelLayer.js",
 
         "src/tools/GameDataManager.js",
         "src/tools/Constant.js",

@@ -481,12 +481,12 @@ var DisplayLayer = cc.Layer.extend({
         if(data == null){
             return;
         }
-        var monster = GameObjectFactory.createGameObject(MONSTER,data.monsterId);
+        var monster = GameObjectFactory.createGameObject(MONSTER,102054)//data.monsterId);
         if(monster == null){
             return;
         }
         this._waveTips.updateLabel(this._waveManager.getCurrentWaveId(), this._waveManager.getWaveCount());
-        monster.setHPRate(data.difficulty);
+        monster.setHPRate(data.difficulty * this._levelData.difficult);
         monster.setPathArray(g_pathArray[data.pathnum-1]);
         this._tmxMap.addChild(monster, 10);
         monster.setPosition(g_pathArray[data.pathnum-1][0]);

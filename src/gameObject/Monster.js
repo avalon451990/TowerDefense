@@ -43,7 +43,7 @@ var Monster = GameObject.extend({
         //cc.log(url);
         ccs.armatureDataManager.addArmatureFileInfo(url);
         this._animation = new ccs.Armature(this._monsterData.action);
-        this._animation.getAnimation().play("show");
+        this._animation.getAnimation().playWithIndex(0);
         this.addChild(this._animation);
 
         this._rect = cc.rect(-20, -25, 40, 50);
