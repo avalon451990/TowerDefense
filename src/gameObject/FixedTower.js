@@ -12,7 +12,7 @@ var FixedTower = Tower.extend({
         //cc.log(url);
         ccs.armatureDataManager.addArmatureFileInfo(url);
         this._animation = new ccs.Armature(this._towerData.resource);
-        this._animation.getAnimation().playWithIndex(0);
+        this._animation.getAnimation().playWithIndex(1);
         this.addChild(this._animation);
     },
 

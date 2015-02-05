@@ -99,7 +99,7 @@ var Monster = GameObject.extend({
             this._currentWayPointIndex++;
             if(this._currentWayPointIndex >= this._pathArr.length-1){
                 this._state = STATE_NONE;
-                GameScene.getGameLayer().displaylayer.beHurt(this._monsterData.damage);
+                g_disPlayLayer.beHurt(this._monsterData.damage);
             }
         }
     },
@@ -115,8 +115,8 @@ var Monster = GameObject.extend({
             if(this._currentHP <= 0){
                 this._currentHP = 0;
                 this._state = STATE_NONE;
-                GameScene.getGameLayer().displaylayer.addMushroom(this._monsterData.mushroom);
-                GameScene.getGameLayer().displaylayer.addGold(this._monsterData.gold);
+                g_disPlayLayer.addMushroom(this._monsterData.mushroom);
+                g_disPlayLayer.addGold(this._monsterData.gold);
 
                 //创建漂浮字;
                 var tips = new DropTips(DROP_TYPE_RES, this._monsterData.mushroom);

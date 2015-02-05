@@ -133,7 +133,6 @@
    <property name="sizeH" value="2"/>
    <property name="sizeW" value="2"/>
   </properties>
-  <object x="481" y="162"/>
  </objectgroup>
  <objectgroup color="#ffaa00" name="item" width="15" height="10">
   <properties>
@@ -172,6 +171,7 @@
    <property name="sizeH" value="2"/>
    <property name="sizeW" value="2"/>
   </properties>
+  <object x="476" y="159"/>
  </objectgroup>
  <objectgroup color="#000000" name="random" width="15" height="10">
   <properties>

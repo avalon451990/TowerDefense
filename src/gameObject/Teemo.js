@@ -33,6 +33,7 @@ var Teemo = cc.Node.extend({
             this._currentHP = 0;
         }
         this._hpLabel.setString(this._currentHP);
+        this._animation.getAnimation().play("wound");
         //创建漂浮字;
         var tips = new DropTips(DROP_TYPE_HURT, damage);
         this.getParent().addChild(tips, MAP_GRID_HEIGHT*MAP_HEIGHT);

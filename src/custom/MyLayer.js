@@ -8,7 +8,7 @@ var MyLayer = cc.Layer.extend({
         this._super();
 
         //颜色层;
-        var colorLayer = new cc.LayerColor(cc.color(100, 100, 100, 125));
+        var colorLayer = new cc.LayerColor(cc.color(30, 68, 105, 125));
         colorLayer.setPosition(cc.p(-cc.winSize.width/2, -cc.winSize.height/2));
         this.addChild(colorLayer);
 

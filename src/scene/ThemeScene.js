@@ -5,11 +5,11 @@ var ThemeScene = cc.Layer.extend({
 
     ctor : function() {
         this._super();
-
-        for(var i = 0; i < 7; i++){
+        this._levelLayer = [];
+        for(var i = 0; i < 8; i++){
             var sp = new cc.Sprite("res/8M_Mainboard.jpg");
             this.addChild(sp);
-            sp.setPosition(cc.p(cc.winSize.width/2-3*sp.getContentSize().width+i*sp.getContentSize().width
+            sp.setPosition(cc.p(cc.winSize.width/2-3.5*sp.getContentSize().width+i*sp.getContentSize().width
                 , cc.winSize.height/2));
         }
 
@@ -34,6 +34,7 @@ var ThemeScene = cc.Layer.extend({
 
     themeCallBack : function(sender){
         var tag = sender.getTag();
+        g_currentChapter = tag;
         this._themeLayer.setVisible(false);
         for(var i = 0; i < this._levelLayer.length; i++){
             this._levelLayer[i].setVisible(false);
@@ -63,9 +64,15 @@ var ThemeScene = cc.Layer.extend({
 });
 
 
-ThemeScene.scene = function(){
+ThemeScene.scene = function(value){
     var scene = new cc.Scene();
     var layer = new ThemeScene();
     scene.addChild(layer);
+
+    if(value != undefined){
+        var node = new cc.Node();
+        node.setTag(value);
+        layer.themeCallBack(node);
+    }
     return scene;
 };

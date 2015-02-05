@@ -481,7 +481,7 @@ var DisplayLayer = cc.Layer.extend({
         if(data == null){
             return;
         }
-        var monster = GameObjectFactory.createGameObject(MONSTER,102054)//data.monsterId);
+        var monster = GameObjectFactory.createGameObject(MONSTER, data.monsterId);
         if(monster == null){
             return;
         }
@@ -646,13 +646,26 @@ var DisplayLayer = cc.Layer.extend({
                 break;
             }
             case 1:{//重新开始;
+                this.clean();
                 cc.director.runScene(GameLoading.scene());
                 break;
             }
             case 2:{//返回;
+                this.clean();
+                cc.director.runScene(ThemeScene.scene());
                 break;
             }
         }
+    },
+
+    clean : function(){
+        this._gameManager.clean();
+        delete this._gameManager;
+        this._waveManager.clean();
+        delete this._waveManager;
+        this.unscheduleUpdate();
+
+        this._tmxMap.removeAllChildren(true);
     },
 
     //游戏结束;
@@ -664,12 +677,62 @@ var DisplayLayer = cc.Layer.extend({
             for(var i = 0; i < towerArr.length; i++){
                 towerArr[i].showLoseAction();
             }
+
+            var loseDialog = new LostDialog();
+            this.addChild(loseDialog, 100);
+            loseDialog.setPosition(cc.p(cc.winSize.width/2, cc.winSize.height/2));
+            loseDialog.initWithCallBack(this, this.overDialogCallBack);
         }else{
             //游戏成功;
             var towerArr = this._gameManager.getObjArray(TOWER);
             for(var i = 0; i < towerArr.length; i++){
                 towerArr[i].showWinAction();
+
+                if(this._teemo.getTeemoHP() == 10){
+                    cc.sys.localStorage.setItem("level"+g_currentLevel, 3);
+                }else if(this._teemo.getTeemoHP() >= 6){
+                    cc.sys.localStorage.setItem("level"+g_currentLevel, 2);
+                }else{
+                    cc.sys.localStorage.setItem("level"+g_currentLevel, 1);
+                }
+
+                //下一关解锁;
+                if(g_currentLevel == 102001 || g_currentLevel == 202001){
+                    //第一章节最后一关
+                    cc.sys.localStorage.setItem("chapter"+1, 0);
+                }else{
+                    //解锁下一关;
+                    var id = g_currentLevel + 100;
+                    cc.sys.localStorage.setItem("level"+id, 0);
+                }
+
+                var winDialog = new WinDialog(3);
+                this.addChild(winDialog, 100);
+                winDialog.setPosition(cc.p(cc.winSize.width/2, cc.winSize.height/2));
+                winDialog.initWithCallBack(this, this.overDialogCallBack);
+            }
+        }
+    },
+
+    overDialogCallBack : function(sender){
+        var tag = sender.getTag();
+        switch (tag){
+            case 0:{//会主场景;
+                this.clean();
+                cc.director.runScene(ThemeScene.scene());
+                break;
+            }
+            case 1:{//重新开始;
+                this.clean();
+                cc.director.runScene(GameLoading.scene());
+                break;
+            }
+            case 2:{//关卡选择;
+                this.clean();
+                cc.director.runScene(ThemeScene.scene(g_currentChapter));
+                break;
             }
         }
     }
+
 });

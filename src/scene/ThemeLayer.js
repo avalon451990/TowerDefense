@@ -18,12 +18,35 @@ var ThemeLayer = cc.Layer.extend({
         //创建关卡;
         var name = ["#8M_Mainpage_Forest.png", "#8M_Mainpage_Snow.png", "#8M_Mainpage_Desert.png"];
         for(var i = 0; i < 3; i++){
+            var chapter = cc.sys.localStorage.getItem("chapter"+i);
+            if(!chapter){
+                if(i == 0){
+                    cc.sys.localStorage.setItem("chapter"+i, 0);//0解锁了;
+                    chapter = 0;
+                }else{
+                    cc.sys.localStorage.setItem("chapter"+i, -1);//-1锁定了;
+                    chapter = -1;
+                }
+            }
+
             var item = new cc.MenuItemSprite(
                 new cc.Sprite(name[i]), new cc.Sprite(name[i]),this.themeSelectCallBack, this );
             item.setTag(i);
             var menu = cc.Menu.create(item);
             menu.setPosition(cc.p(480-(310) + 310*i, 320));
             this._container.addChild(menu);
+
+            if(chapter == -1){
+                item.setEnabled(false);
+            }else{
+                item.setEnabled(true);
+            }
+
+            if(i == 1 && chapter == -1){
+                var label = cc.LabelTTF.create("please through previous chapter!", "arial", 24);
+                label.setPosition(cc.p(item.getContentSize().width/2, item.getContentSize().height/2));
+                item.addChild(label);
+            }
         }
     },
 

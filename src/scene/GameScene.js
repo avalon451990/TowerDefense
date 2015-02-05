@@ -7,7 +7,6 @@ var GameScene = cc.Layer.extend({
 	ctor:function(){
 		this._super();
 		this.init();
-        g_gameScene = this;
 	},
 
 	init:function(){
@@ -39,11 +38,6 @@ var GameScene = cc.Layer.extend({
 	}
 });
 
-GameScene.g_gameScene = null;
-
-GameScene.getGameLayer = function(){
-    return g_gameScene;
-};
 
 GameScene.scene = function(){
 	var scene = new cc.Scene();

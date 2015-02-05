@@ -20,6 +20,8 @@
         "src/custom/MyLayer.js",
         "src/custom/MainMenuDialog.js",
         "src/custom/DropTips.js",
+        "src/custom/LostDialog.js",
+        "src/custom/WinDialog.js",
 
         "src/gameLayer/BackGroundLayer.js",
         "src/gameLayer/DisplayLayer.js",

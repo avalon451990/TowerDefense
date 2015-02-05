@@ -21,6 +21,7 @@ var MainScene = cc.Layer.extend({
 
     menuCallBack : function(sender){
         cc.director.runScene(ThemeScene.scene());
+
     }
 });
 

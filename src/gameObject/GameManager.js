@@ -11,12 +11,21 @@ GameManager = cc.Class.extend({
     _deadArr : [],//移除数组
 
     ctor : function(){
-        _monsterArr = [];
-        _towerArr = [];
-        _bulletArr = [];
-        _partArr = [];
-        _addArr = [];
-        _deadArr = [];
+        this._monsterArr = [];
+        this._towerArr = [];
+        this._bulletArr = [];
+        this._partArr = [];
+        this._addArr = [];
+        this._deadArr = [];
+    },
+
+    clean : function(){
+        this._monsterArr = [];
+        this._towerArr = [];
+        this._bulletArr = [];
+        this._partArr = [];
+        this._addArr = [];
+        this._deadArr = [];
     },
 
     getObjArray : function (type) {

@@ -18,6 +18,7 @@ var g_teemoSkill = [];//teemo技能;
 var g_disPlayLayer = null;//在这里保存了一份display;
 
 var g_currentLevel = 100101;
+var g_currentChapter = 0;
 
 //按照索引获取英雄数据;
 var getHeroDataById = function(id){

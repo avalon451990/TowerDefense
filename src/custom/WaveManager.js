@@ -13,6 +13,9 @@ var WaveManager = cc.Class.extend({
 //        monster : []
 //    },
 
+    clean : function(){
+        this._waveData = [];
+    },
 
     addMonsterWave : function(value){
         var data = {};//一波怪物的数据;
