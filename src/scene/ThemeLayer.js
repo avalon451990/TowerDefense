@@ -1,4 +1,4 @@
-
+//章节界面;
 var ThemeLayer = cc.Layer.extend({
     _container : null,
 

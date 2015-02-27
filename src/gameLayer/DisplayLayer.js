@@ -24,7 +24,14 @@ var DisplayLayer = cc.Layer.extend({
         g_disPlayLayer = this;
 
         //造塔控件;
-        this._buildTower = new BuildTower(40011, 40021, 40031, 40041, 40051, 40081);
+        var towerIds = [];
+        for(var i = 0; i < g_heroIds.length; i++){
+            var state = cc.sys.localStorage.getItem("tower"+i);
+            if(state == 1) {
+                towerIds.push(g_heroIds[i]);
+            }
+        }
+        this._buildTower = new BuildTower(towerIds);
         this._tmxMap.addChild(this._buildTower, MAP_GRID_HEIGHT*MAP_HEIGHT+1);
         this._buildTower.setVisible(false);
         this._buildTower.initWithTarget(this, this.buildTowerCallBack);

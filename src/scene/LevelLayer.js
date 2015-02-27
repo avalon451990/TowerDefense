@@ -1,4 +1,4 @@
-
+//关卡界面;
 var LevelLayer = cc.Layer.extend({
 
     ctor : function(themeId){

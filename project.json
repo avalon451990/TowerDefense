@@ -34,6 +34,7 @@
         "src/scene/ThemeScene.js",
         "src/scene/ThemeLayer.js",
         "src/scene/LevelLayer.js",
+        "src/scene/RoleSelectLayer.js",
 
         "src/tools/GameDataManager.js",
         "src/tools/Constant.js",

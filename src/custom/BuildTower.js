@@ -17,7 +17,8 @@ var BuildTower = cc.Node.extend({
         this._menu.setPosition(cc.p(0, 0));
         this.addChild(this._menu);
 
-        this.initWithIds(Array.prototype.slice.call(arguments, 0));
+        //this.initWithIds(Array.prototype.slice.call(arguments, 0));
+        this.initWithIds(towerIds);
         //动画;
         var fadein = cc.FadeIn.create(1);
         var fadeout = cc.FadeOut.create(1);

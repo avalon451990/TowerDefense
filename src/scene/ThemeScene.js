@@ -53,7 +53,10 @@ var ThemeScene = cc.Layer.extend({
             }
         }else{
             g_currentLevel = tag;
-            cc.director.runScene(GameLoading.scene());
+            //cc.director.runScene(GameLoading.scene());
+            var layer = new RoleSelectLayer();
+            this.addChild(layer, 100);
+            layer.setPosition(cc.p(cc.winSize.width/2, cc.winSize.height/2));
         }
 
     },
