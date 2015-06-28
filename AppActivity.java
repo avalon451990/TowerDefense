@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.javascript;
-
+ 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxJavascriptJavaBridge;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
